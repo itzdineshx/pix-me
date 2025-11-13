@@ -1,0 +1,233 @@
+@import "tailwindcss";
+@import "../../node_modules/nes.css/css/nes.css";
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced Section Styles */
+section {
+  position: relative;
+  overflow: hidden;
+}
+
+section::before {
+  content: '';
+  position: absolute;
+  top:   0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+}
+
+section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+}
+
+/* Floating Animation with Delays */
+.animate-float-delay-1 { animation: float 3s ease-in-out infinite; }
+.animate-float-delay-2 { animation: float 3s ease-in-out infinite 0.5s; }
+.animate-float-delay-3 { animation: float 3s ease-in-out infinite 1s; }
+.animate-float-delay-4 { animation: float 3s ease-in-out infinite 1.5s; }
+
+/* Enhanced NES Container Hover Effects */
+.nes-container:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient Text Effect */
+.gradient-text {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.minecraft-world.day {
+  background-image: linear-gradient(
+    to bottom,
+    #6db1ff 0%,
+    #6db1ff 60%,
+    #8bcc53 60%,
+    #8bcc53 64%,
+    #7a674d 64%,
+    #7a674d 94%,
+    #616161 94%,
+    #616161 100%
+  );
+}
+
+.minecraft-world.night {
+  background-image: linear-gradient(
+    to bottom,
+    #0d0b1e 0%,
+    #000000 60%,
+    #2a4a2a 60%,
+    #2a4a2a 64%,
+    #3d3228 64%,
+    #3d3228 94%,
+    #1a1a1a 94%,
+    #1a1a1a 100%
+  );
+}
+
+
+@keyframes swirl {
+  0%   { transform: scale(0)   rotate(0deg);   opacity: 0.8; }
+  100% { transform: scale(1.5) rotate(360deg); opacity: 0;   }
+}
+
+/* Global pixelation for all images and icons */
+img, [class*="icon"], svg {
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: pixelated !important;
+}
+
+/* Specific pixelation classes for enhanced effects */
+.pixelated {
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: pixelated !important;
+}
+
+/* Enhanced pixelation for different elements */
+.pixelated-strong {
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: pixelated !important;
+  filter: contrast(1.2) brightness(1.1);
+}
+
+.pixelated-retro {
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: pixelated !important;
+  filter: sepia(0.2) contrast(1.3) brightness(0.9);
+}
+
+/* Pixelation effect for icons */
+.icon-pixelated {
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: pixelated !important;
+  filter: contrast(1.5) brightness(1.2) saturate(0.8);
+}
+/* Default NES-style progress (light mode or default) */
+.nes-progress {
+  color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #ffffff;
+  border-image: url("data:image/svg+xml;utf8,<svg%20version='1.1'%20width='5'%20height='5'%20xmlns='http://www.w3.org/2000/svg'><path%20d='M2%201%20h1%20v1%20h-1%20z%20M1%202%20h1%20v1%20h-1%20z%20M3%202%20h1%20v1%20h-1%20z%20M2%203%20h1%20v1%20h-1%20z'%20fill='rgb(33,37,41)'/></svg>") 2 / 2 / 2;
+  width: 100%;
+  height: 48px;
+  margin: 4px;
+}
+
+/* Make sure the bar color stands out */
+.nes-progress::-webkit-progress-bar {
+  background-color: #ffffff;
+}
+.nes-progress::-webkit-progress-value {
+  background-color: #4caf50;
+}
+.nes-progress::-moz-progress-bar {
+  background-color: #4caf50;
+}
+.nes-progress::-ms-fill {
+  background-color: #4caf50;
+  border: none;
+}
+
+/* DARK MODE — specifically for containers using `is-dark` */
+.nes-container.is-dark .nes-progress {
+  background-color: #2a2a2a !important;
+  color: #f5f5f5;
+  border-image: url("data:image/svg+xml;utf8,<svg%20version='1.1'%20width='5'%20height='5'%20xmlns='http://www.w3.org/2000/svg'><path%20d='M2%201%20h1%20v1%20h-1%20z%20M1%202%20h1%20v1%20h-1%20z%20M3%202%20h1%20v1%20h-1%20z%20M2%203%20h1%20v1%20h-1%20z'%20fill='rgb(255,255,255)'/></svg>") 2 / 2 / 2 !important;
+}
+
+.nes-container.is-dark .nes-progress::-webkit-progress-bar {
+  background-color: #2a2a2a !important;
+}
+.nes-container.is-dark .nes-progress::-webkit-progress-value {
+  background-color: #4caf50 !important;
+}
+.nes-container.is-dark .nes-progress::-moz-progress-bar {
+  background-color: #4caf50 !important;
+}
+.nes-container.is-dark .nes-progress::-ms-fill {
+  background-color: #4caf50 !important;
+  border: none !important;
+}
+
+.bg-opacity-90 {
+  background-color: rgba(31, 41, 55, 0.9); /* Adjust the color and opacity as needed */
+}
+
+.perspective {
+  perspective: 1000px;
+}
+
+.nes-container.is-dark .nes-list.is-circle li:before {
+  color: white;
+}
+
+/* NES.css Dark Mode Text Fixes */
+.nes-balloon.is-dark {
+  color: #ffffff !important;
+}
+
+.nes-balloon.is-dark p {
+  color: #ffffff !important;
+}
+
+.nes-badge span {
+  color: #212529 !important;
+}
+
+.nes-badge.is-dark span {
+  color: #ffffff !important;
+}
+
+.nes-badge.is-success span {
+  color: #ffffff !important;
+}
+
+.nes-badge.is-primary span {
+  color: #ffffff !important;
+}
+
+.nes-badge.is-warning span {
+  color: #212529 !important;
+}
+
+.nes-badge.is-error span {
+  color: #ffffff !important;
+}
+
+/* NES.css Text Color Fixes */
+.nes-text.is-primary {
+  color: #209cee !important;
+}
+
+.nes-text.is-success {
+  color: #92cc41 !important;
+}
+
+.nes-text.is-warning {
+  color: #f7d51d !important;
+}
+
+.nes-text.is-error {
+  color: #e76e55 !important;
+}
+
+.nes-text.is-disabled {
+  color: #d3d3d3 !important;
+}

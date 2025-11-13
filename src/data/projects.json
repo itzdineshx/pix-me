@@ -1,0 +1,148 @@
+[
+    {
+        "name": "Healthhub-ai",
+        "description": "Experience personalized care through advanced AI that predicts health risks, coaches your workouts, plans your meals, and securely manages your records.",
+        "repoUrl": "https://github.com/itzdineshx/HealthHub_Ai_v2",
+        "liveUrl": "https://healthhub-ai.netlify.app/",
+        "image": "/assets/healthhub-ai-v2.png",
+        "technologies": [
+            "React",
+            "OpenCV",
+            "AI"
+        ]
+    },
+    {
+        "name": "Herhealth-ai",
+        "description": "HerHealth is your personalized wellness companion for every life stage. Track your cycle, monitor symptoms, connect with experts, and join a supportive community.",
+        "repoUrl": "https://github.com/itzdineshx/HerHealth-V1",
+        "liveUrl": "https://herhealth-ai.netlify.app/",
+        "image": "/assets/herhealth-ai-v2.png",
+        "technologies": [
+            "React",
+            "AI",
+            "Hackathon"
+        ]
+    },
+    {
+        "name": "Edubuddy-ai",
+        "description": "Transform your learning journey with EduBuddy.ai's revolutionary AI-powered tools. Upload documents, generate podcasts, create flashcards, and chat with your personal AI tutor.",
+        "repoUrl": "https://github.com/itzdineshx/EduBuddy.Ai",
+        "liveUrl": "https://edubuddy-ai.netlify.app/",
+        "image": "/assets/edubuddy-ai.png",
+        "technologies": [
+            "React",
+            "AI",
+            "Women"
+        ]
+    },
+    {
+        "name": "Zaymazone",
+        "description": "Discover authentic handcrafted treasures that tell stories of tradition, heritage, and the skilled hands that create them.",
+        "repoUrl": "https://github.com/itzdineshx/zaymazone",
+        "liveUrl": "https://zaymazone.netlify.app/",
+        "image": "/assets/zaymazone-v1.png",
+        "technologies": [
+            "React",
+            "E-Commerce",
+            "start-up"
+        ]
+    },
+    {
+        "name": "Lokkesh Anime Themed Portfolio",
+        "description": "This is a personal portfolio website for Lokkesh U P.The portfolio showcases his skills, projects, and love for anime, all styled in a fun and visually striking anime-inspired theme.",
+        "repoUrl": "https://github.com/itzdineshx/lokkesh-portfolio-anime",
+        "liveUrl": "https://lokkesh-portfolio.vercel.app/",
+        "image": "/assets/lokkesh_portfolio.png",
+        "technologies": [
+            "Portfolio",
+            "Anime",
+            "Client-work"
+        ]
+    },
+    {
+        "name": "Sugoi Pick - Anime Recommender",
+        "description": "Get personalized anime recommendations based on your preferences. Filter by genre, type, and rating to find exactly what you're looking for.",
+        "repoUrl": "https://github.com/itzdineshx/Sugoi_Pick",
+        "liveUrl": "https://sugoi-pick.netlify.app/",
+        "image": "/assets/sugoi-pick.png",
+        "technologies": [
+            "Recommender",
+            "Anime",
+            "Client-work"
+        ]
+    },
+    {
+        "name": "PoseJi",
+        "description": "Real‑time pose estimation web app using OpenCV & Streamlit.",
+        "repoUrl": "https://github.com/itzdineshx/PoseJi",
+        "liveUrl": "https://posejiv2.streamlit.app",
+        "image": "/assets/posejiv2.streamlit.app_interferace.png",
+        "technologies": [
+            "Python",
+            "OpenCV",
+            "Internship"
+        ]
+    },
+    {
+        "name": "Iris Flower Classification Web App",
+        "description": "A web application for predicting Iris flower species using machine learning models with Gradio UI.",
+        "repoUrl": "https://github.com/itzdineshx/Iris-Classifier-Gradio",
+        "liveUrl": "https://huggingface.co/spaces/DINESH-X/Iris-Flower-classifier",
+        "image": "/assets/Iris-Flower-Classifier-a-Hugging-Face-Space.png",
+        "technologies": [
+            "Python",
+            "Scikit-learn",
+            "Gradio",
+            "Learning"
+        ]
+    },
+    {
+        "name": "Gold Price Predictor Web App",
+        "description": "This App is For calculating Gold Price in INR using USD/INR Exchange Rate.",
+        "repoUrl": "https://github.com/itzdineshx/Gold-Price-Predictor-INR",
+        "liveUrl": "https://huggingface.co/spaces/DINESH-X/gold-price-predictor-INR",
+        "image": "/assets/gold_app.png",
+        "technologies": [
+            "Python",
+            "Streamlit",
+            "Regression",
+            "Learning"
+        ]
+    },
+    {
+        "name": "FOCXY Extension",
+        "description": "Chrome extension for productivity via site blocking.",
+        "repoUrl": "https://github.com/itzdineshx/FOCXY",
+        "liveUrl": "https://drive.google.com/file/d/1NAQXavZItxu38Lxo8zu6TCVJPWxIQfha/view",
+        "image": "/assets/foxcy_ext.png",
+        "technologies": [
+            "JavaScript",
+            "HTML/CSS",
+            "CS50X-Project"
+        ]
+    },
+    {
+        "name": "Monkeypox Forecasting",
+        "description": "Time series forecasting on mpox trends during internship.",
+        "repoUrl": "https://github.com/itzdineshx/MPOX_Analysis_Forecasting",
+        "image": "/assets/mpox.jpg",
+        "technologies": [
+            "Python",
+            "Time Series",
+            "Pandas",
+            "Research"
+        ]
+    },
+    {
+        "name": "Tic Tac Toe with AI",
+        "description": "Classic Tic Tac Toe game implemented with an unbeatable AI agent.",
+        "repoUrl": "https://github.com/itzdineshx/Cs50ai_tic_tac_toe_AI",
+        "liveUrl": "https://itzdineshx.github.io/Cs50ai_tic_tac_toe_AI/",
+        "image": "/assets/tat.png",
+        "technologies": [
+            "Python",
+            "Minimax",
+            "AI-Game"
+        ]
+    }
+]

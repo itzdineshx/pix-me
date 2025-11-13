@@ -1,0 +1,137 @@
+[
+    {
+        "title": "Programming Languages",
+        "skills": [
+            {
+                "name": "Python",
+                "icon": "TbBrandPython",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "R",
+                "icon": "TbBrandR",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "C",
+                "icon": "TbBrandCPlusPlus",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "JavaScript",
+                "icon": "TbBrandJavascript",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "HTML5",
+                "icon": "TbBrandHtml5",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "CSS3",
+                "icon": "TbBrandCss3",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "SQL",
+                "icon": "TbSql",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "MongoDB",
+                "icon": "SiMongodb",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Excel",
+                "icon": "SiMicrosoftexcel",
+                "library": "react-icons/si"
+            }
+        ]
+    },
+    {
+        "title": "Frameworks & Libraries",
+        "skills": [
+            {
+                "name": "React",
+                "icon": "TbBrandReact",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "TensorFlow",
+                "icon": "SiTensorflow",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "OpenCV",
+                "icon": "SiOpencv",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "PyTorch",
+                "icon": "SiPytorch",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Hugging Face",
+                "icon": "SiHuggingface",
+                "library": "react-icons/si"
+            }
+        ]
+    },
+    {
+        "title": "Tools & Platforms",
+        "skills": [
+            {
+                "name": "GitHub",
+                "icon": "TbBrandGithub",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "VS Code",
+                "icon": "TbBrandVscode",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "PyCharm",
+                "icon": "SiPycharm",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Anaconda",
+                "icon": "SiAnaconda",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Jupyter Notebook",
+                "icon": "SiJupyter",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Google Colab",
+                "icon": "SiGooglecolab",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Kaggle",
+                "icon": "SiKaggle",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Docker",
+                "icon": "TbBrandDocker",
+                "library": "react-icons/tb"
+            },
+            {
+                "name": "Kubernetes",
+                "icon": "SiKubernetes",
+                "library": "react-icons/si"
+            },
+            {
+                "name": "Power BI",
+                "icon": "SiPowerbi",
+                "library": "react-icons/si"
+            }
+        ]
+    }
+]
