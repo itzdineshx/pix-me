@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { siteConfig } from "@/config/site";
 import { Press_Start_2P } from 'next/font/google';
+import GlobalShootingStars from "@/components/GlobalShootingStars";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body
         className="minecraft-world bg-green-200 font-pixel min-h-screen text-gray-800"
       >
+        <GlobalShootingStars />
         <main>
           {children}
         </main>

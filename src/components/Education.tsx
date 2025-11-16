@@ -52,14 +52,14 @@ const Education = () => {
 
               <div className="ml-0 md:ml-20">
                 <div className="nes-container with-title is-rounded pixelated hover:shadow-2xl transition-all duration-300 education-card">
-                  <p className="title flex items-center gap-3 pixel-text text-lg bg-gray-800 p-3 rounded">
+                  <div className="title flex items-center gap-3 pixel-text text-lg bg-gray-800 p-3 rounded">
                     <span className="text-3xl animate-bounce">🎓</span>
                     <span className="text-yellow-400 font-bold text-xl">{edu.degree}</span>
                     <div className="flex gap-1 ml-auto">
                       <i className="nes-icon star is-small text-yellow-400"></i>
                       <i className="nes-icon heart is-small text-red-400"></i>
                     </div>
-                  </p>
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div className="nes-container is-rounded is-dark education-info-card">

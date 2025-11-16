@@ -21,11 +21,13 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
 
     // Generate clouds only on client side to avoid hydration mismatch
     useEffect(() => {
-        const cloudCount = 10;
+        const cloudCount = 15;
         const generatedClouds = Array.from({ length: cloudCount }, (_, index) => ({
-            top: `${(index * 7 + 2) % 30 + 2}vh`, // Deterministic positioning
-            duration: 30 + (index * 5) % 50,
-            delay: (index * 1) % 10
+            top: `${Math.random() * 80}%`, // Random vertical positioning
+            duration: 30 + Math.random() * 50, // Random duration between 30-80s
+            delay: Math.random() * 20, // Random delay 0-20s
+            scale: 0.6 + Math.random() * 0.8, // Random size variation
+            opacity: 0.4 + Math.random() * 0.3, // Random opacity 0.4-0.7
         }));
         setClouds(generatedClouds);
     }, []);
@@ -73,22 +75,38 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
             </AnimatePresence>
             <AnimatePresence>
                 {day ? (
-                    <div className="absolute top-0 left-0 w-full h-120 overflow-hidden pointer-events-none">
-                        {clouds.map((cloud, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute w-40 h-18 bg-white opacity-80 rounded-full shadow-md z-10"
-                                style={{ top: cloud.top, left: '-200px' }}
-                                animate={{ left: '110vw' }}
-                                transition={{
-                                    duration: cloud.duration,
-                                    ease: 'linear',
-                                    repeat: Infinity,
-                                    delay: cloud.delay,
-                                }}
-                            />
-                        ))}
-                    </div>
+                    <>
+                        <div className="absolute top-0 left-0 w-full h-120 overflow-hidden pointer-events-none">
+                            {clouds.map((cloud, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="absolute bg-white rounded-full shadow-lg z-10"
+                                    style={{ 
+                                        top: cloud.top, 
+                                        left: '-200px',
+                                        width: `${100 + Math.random() * 80}px`,
+                                        height: `${40 + Math.random() * 30}px`,
+                                        opacity: cloud.opacity,
+                                        transform: `scale(${cloud.scale})`,
+                                    }}
+                                    animate={{ 
+                                        left: '110vw', 
+                                        y: [0, 10 + Math.random() * 10, -5 - Math.random() * 5, 0] 
+                                    }}
+                                    transition={{
+                                        left: { duration: cloud.duration, ease: 'linear', repeat: Infinity, delay: cloud.delay },
+                                        y: { duration: cloud.duration * 0.6, repeat: Infinity, ease: 'easeInOut', delay: cloud.delay },
+                                    }}
+                                >
+                                    {/* Multi-part cloud for realistic shape */}
+                                    <div className="absolute inset-0 bg-white rounded-full"></div>
+                                    <div className="absolute top-[-30%] left-[20%] w-[60%] h-[80%] bg-white rounded-full opacity-90"></div>
+                                    <div className="absolute top-[-20%] right-[15%] w-[50%] h-[70%] bg-white rounded-full opacity-85"></div>
+                                </motion.div>
+                            ))}
+                        </div>
+                        <div className="absolute top-4 right-4 text-6xl z-20 animate-pulse">☀️</div>
+                    </>
                 ) : (
                     <motion.div
                         className="absolute top-0 left-0 w-full h-120 z-10 overflow-hidden pointer-events-none"
@@ -111,6 +129,21 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
                                 }}
                             />
                         ))}
+                        {/* Shooting Stars - Background */}
+                        <div className="absolute inset-0 overflow-hidden">
+                            {[...Array(12)].map((_, i) => (
+                                <span
+                                    key={`shooting-star-bg-${i}`}
+                                    className="shooting-star"
+                                    style={{
+                                        top: `${Math.random() * 100}%`,
+                                        right: `${Math.random() * 100}%`,
+                                        animationDelay: `${Math.random() * 20}s`,
+                                        animationDuration: `${2 + Math.random() * 4}s`,
+                                    }}
+                                ></span>
+                            ))}
+                        </div>
                         {/* Falling Stars */}
                         {[...Array(12)].map((_, i) => (
                             <motion.div
@@ -144,7 +177,38 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
                 <div className="relative z-20 pt-8">{children}</div>
             )}
             {isEntered && (
-                <footer className={`p-4 text-white z-20 relative ${day ? 'bg-black bg-opacity-50' : ''}`}>
+                                <footer className={`nes-container is-rounded ${day ? "bg-blue-200" : "is-dark"} text-center py-8 px-4 relative overflow-hidden`}>
+                    {day && (
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                            {clouds.map((cloud, i) => (
+                                <motion.div
+                                    key={`footer-cloud-${i}`}
+                                    className="absolute bg-white rounded-full shadow-lg"
+                                    style={{ 
+                                        top: cloud.top, 
+                                        left: '-200px',
+                                        width: `${100 + Math.random() * 80}px`,
+                                        height: `${40 + Math.random() * 30}px`,
+                                        opacity: cloud.opacity,
+                                        transform: `scale(${cloud.scale})`,
+                                    }}
+                                    animate={{ 
+                                        left: '110vw', 
+                                        y: [0, 10 + Math.random() * 10, -5 - Math.random() * 5, 0] 
+                                    }}
+                                    transition={{
+                                        left: { duration: cloud.duration, ease: 'linear', repeat: Infinity, delay: cloud.delay },
+                                        y: { duration: cloud.duration * 0.6, repeat: Infinity, ease: 'easeInOut', delay: cloud.delay },
+                                    }}
+                                >
+                                    {/* Multi-part cloud for realistic shape */}
+                                    <div className="absolute inset-0 bg-white rounded-full"></div>
+                                    <div className="absolute top-[-30%] left-[20%] w-[60%] h-[80%] bg-white rounded-full opacity-90"></div>
+                                    <div className="absolute top-[-20%] right-[15%] w-[50%] h-[70%] bg-white rounded-full opacity-85"></div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    )}
                     {!day && (
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
                             {/* Footer Stars */}
@@ -161,32 +225,21 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
                                     }}
                                 />
                             ))}
-                            {/* Footer Shooting Stars */}
-                            {[...Array(5)].map((_, i) => (
-                                <motion.div
-                                    key={`footer-falling-${i}`}
-                                    className="absolute"
-                                    initial={{ 
-                                        top: `${Math.random() * 30}%`, 
-                                        left: `${Math.random() * 100}%`,
-                                        opacity: 0 
-                                    }}
-                                    animate={{ 
-                                        top: '100%',
-                                        left: `${parseFloat(`${Math.random() * 100}`) + 15}%`,
-                                        opacity: [0, 1, 1, 0] 
-                                    }}
-                                    transition={{ 
-                                        duration: 1 + Math.random() * 0.5,
-                                        repeat: Infinity,
-                                        delay: Math.random() * 12,
-                                        ease: 'easeOut'
-                                    }}
-                                >
-                                    <div className="w-px h-16 bg-gradient-to-b from-white via-white/80 to-transparent blur-sm shadow-lg"
-                                         style={{ transform: 'rotate(45deg)' }} />
-                                </motion.div>
-                            ))}
+                            {/* Footer Shooting Stars - Realistic Random */}
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                {[...Array(8)].map((_, i) => (
+                                    <span
+                                        key={`footer-shooting-${i}`}
+                                        className="shooting-star"
+                                        style={{
+                                            top: `${10 + Math.random() * 80}%`, // More realistic vertical spread
+                                            right: `${Math.random() * 120}%`, // Extended horizontal range
+                                            animationDelay: `${Math.random() * 25}s`, // Longer delay range
+                                            animationDuration: `${3 + Math.random() * 5}s`, // More varied speeds
+                                        }}
+                                    ></span>
+                                ))}
+                            </div>
                         </div>
                     )}
                     <div className="max-w-4xl mx-auto relative z-10">
