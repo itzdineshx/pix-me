@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { siteConfig } from '@/config/site'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { Work } from '@/types/work'
+import { TbCrown, TbCode, TbSchool, TbBriefcase } from 'react-icons/tb'
 
 export default function WorkExperience({ day }: { day: boolean }) {
     return (
@@ -22,6 +23,16 @@ export default function WorkExperience({ day }: { day: boolean }) {
 
 function WorkCard({ job, day }: { job: Work, day: boolean }) {
     const [open, setOpen] = useState(false)
+
+    const getIcon = (position: string) => {
+        if (position.includes('CTO')) return TbCrown;
+        if (position.includes('Developer')) return TbCode;
+        if (position.includes('Intern')) return TbSchool;
+        return TbBriefcase;
+    }
+
+    const IconComponent = getIcon(job.position);
+
     return (
         <motion.article
             id="work"
@@ -29,7 +40,8 @@ function WorkCard({ job, day }: { job: Work, day: boolean }) {
             className={`relative nes-container is-rounded with-title p-4 flex flex-col justify-between pb-12 ${day ? 'bg-white text-gray-900' : 'is-dark text-gray-100'}`}
         >
             <div>
-                <h3 className="font-bold text-lg">
+                <h3 className="font-bold text-lg flex items-center gap-2">
+                    <IconComponent size={24} />
                     {job.position} <span className="text-sm text-gray-500">@</span> {job.company}
                 </h3>
                 <p className="text-xs text-gray-500 mb-2">

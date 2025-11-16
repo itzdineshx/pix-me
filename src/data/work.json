@@ -11,7 +11,10 @@
             "Directed cross-functional engineering activities and technical decision-making.",
             "Improved infrastructure reliability and reduced operational overhead through automation."
         ],
-        "tags": ["AI", "Automation", "System Architecture", "Technical Strategy", "Leadership"]
+        "tags": ["AI", "Automation", "System Architecture", "Technical Strategy", "Leadership"],
+        "links": [
+            { "label": "Company Website", "url": "https://zaymazone.com" }
+        ]
     },
     {
         "company": "Thenam Software Solutions",
@@ -25,7 +28,10 @@
             "Deployed AI assistants and intelligent automation for real-time decision-making.",
             "Collaborated with cross-teams to convert requirements into deployable AI solutions."
         ],
-        "tags": ["AI", "NLP", "ML", "Automation", "Enterprise Systems"]
+                "tags": ["AI", "NLP", "ML", "Automation", "Enterprise Systems"],
+        "links": [
+            { "label": "Company Website", "url": "https://thenamsoft.com" }
+        ]
     },
     {
         "company": "OneYes InfoTech Solutions",
@@ -39,7 +45,10 @@
             "Improved AI inference workflows leading to more reliable model outputs.",
             "Contributed to internal project documentation and testing pipelines."
         ],
-        "tags": ["AI", "ML", "APIs", "Backend", "Prototyping"]
+        "tags": ["AI", "ML", "APIs", "Backend", "Prototyping"],
+        "links": [
+            { "label": "Company Website", "url": "https://oneyesinfotech.com" }
+        ]
     },
     {
         "company": "Edunet Foundation / AICTE",
@@ -53,7 +62,11 @@
             "Worked with responsible AI principles and ethics-driven design.",
             "Improved understanding of real-world ML pipelines through structured case studies."
         ],
-        "tags": ["AI", "ML", "TensorFlow", "Scikit-learn", "Responsible AI"]
+        "tags": ["AI", "ML", "TensorFlow", "Scikit-learn", "Responsible AI"],
+        "links": [
+            { "label": "Edunet Foundation", "url": "https://edunetfoundation.org" },
+            { "label": "AICTE", "url": "https://www.aicte-india.org" }
+        ]
     },
     {
         "company": "DataPlay (MSME Approved Program)",
@@ -70,7 +83,10 @@
             "Improved statistical + visualization skills through real datasets.",
             "Strengthened ML workflow understanding (EDA → Model → Deployable output)."
         ],
-        "tags": ["Data Science", "ML", "Excel", "Statistics", "Dashboard"]
+        "tags": ["Data Science", "ML", "Excel", "Statistics", "Dashboard"],
+        "links": [
+            { "label": "DataPlay School", "url": "https://dataplayschool.com" }
+        ]
     },
     {
         "company": "Prodigy Infotech",
@@ -83,7 +99,10 @@
             "Titanic Survival Analysis: Performed 20+ EDA plots, Improved model accuracy via engineered features",
             "Credit Card Fraud Detection: Balanced imbalanced dataset (oversampling/undersampling), Built Logistic Regression achieving reliable fraud detection performance"
         ],
-        "tags": ["Data Science", "ML", "EDA", "Sentiment Analysis", "Fraud Detection"]
+        "tags": ["Data Science", "ML", "EDA", "Sentiment Analysis", "Fraud Detection"],
+        "links": [
+            { "label": "Prodigy Infotech", "url": "https://prodigyinfotech.dev" }
+        ]
     },
     {
         "company": "Cognifyz Technologies",
@@ -98,7 +117,10 @@
             "Engineered features for delivery, booking, and price segmentation models.",
             "Generated insights improving understanding of customer behavior patterns."
         ],
-        "tags": ["Data Science", "Analytics", "GeoPandas", "Feature Engineering"]
+        "tags": ["Data Science", "Analytics", "GeoPandas", "Feature Engineering"],
+        "links": [
+            { "label": "Cognifyz Technologies", "url": "https://cognifyz.com" }
+        ]
     },
     {
         "company": "CodSoft",
@@ -115,6 +137,9 @@
             "Completed 5 machine learning projects.",
             "Improved understanding of ML model selection and evaluation."
         ],
-        "tags": ["ML", "Classification", "Regression", "KNN", "SVM"]
+        "tags": ["ML", "Classification", "Regression", "KNN", "SVM"],
+        "links": [
+            { "label": "CodSoft", "url": "https://codsoft.in" }
+        ]
     }
 ]
