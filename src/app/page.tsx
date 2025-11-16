@@ -254,6 +254,15 @@ export default function Home() {
                   <h3 className="pixel-text text-lg text-green-400 mb-2">{experience.position}</h3>
                   <p className="text-xs uppercase tracking-wide mb-2">{experience.company}</p>
                   <p className="text-sm mb-3 leading-relaxed">{experience.summary}</p>
+                  {experience.tags && experience.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {experience.tags.map((tag, index) => (
+                        <span key={index} className="nes-badge">
+                          <span className="is-primary">{tag}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   <ul className="nes-list is-disc pl-6 space-y-1 text-xs">
                     {experience.highlights.slice(0, 2).map((highlight, idx) => (
                       <li key={idx}>{highlight}</li>

@@ -36,6 +36,15 @@ function WorkCard({ job, day }: { job: Work, day: boolean }) {
                     {job.startDate} &mdash; {job.endDate || 'Present'}
                 </p>
                 <p className="text-sm mb-2">{job.summary}</p>
+                {job.tags && job.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-2">
+                        {job.tags.map((tag, index) => (
+                            <span key={index} className="nes-badge">
+                                <span className="is-primary">{tag}</span>
+                            </span>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {open && (
@@ -45,6 +54,18 @@ function WorkCard({ job, day }: { job: Work, day: boolean }) {
                             <li key={i}>{h}</li>
                         ))}
                     </ul>
+                    {job.links && job.links.length > 0 && (
+                        <div className="mt-4">
+                            <p className="text-sm font-bold mb-2">Links:</p>
+                            <div className="flex flex-wrap gap-2">
+                                {job.links.map((link, i) => (
+                                    <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="nes-btn is-success is-small">
+                                        {link.label}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
             <button
