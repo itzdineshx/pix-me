@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import ContactForm from "./ContactForm";
 
 export default function Contact({ day }: { day: boolean }) {
     const buttonBase = `nes-btn contact-social-btn ${day ? "contact-social-btn-day" : "contact-social-btn-night"}`;
@@ -6,6 +7,9 @@ export default function Contact({ day }: { day: boolean }) {
     return (
         <section id="contact" className={`nes-container is-rounded with-title ${day ? "bg-gray-200" : "bg-gray-900 is-dark"}`}>
             <p className="title">💬 CONNECT WITH ME</p>
+
+            {/* Contact Form */}
+            <ContactForm day={day} />
 
             {/* Social Links */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">

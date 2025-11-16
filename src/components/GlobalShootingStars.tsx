@@ -17,16 +17,18 @@ export default function GlobalShootingStars() {
         return () => clearInterval(interval);
     }, []);
 
+    // Only show in night mode
     if (!isNight) return null;
 
     return (
-        <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-            {[...Array(12)].map((_, i) => (
+        <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+            {/* Footer area shooting stars only (bottom 20% of screen) */}
+            {[...Array(8)].map((_, i) => (
                 <span
                     key={`global-shooting-star-${i}`}
                     className="shooting-star"
                     style={{
-                        top: `${Math.random() * 100}%`,
+                        top: `${80 + Math.random() * 20}%`, // Only in bottom 20% of screen
                         right: `${Math.random() * 100}%`,
                         animationDelay: `${Math.random() * 20}s`,
                         animationDuration: `${2 + Math.random() * 4}s`,

@@ -38,26 +38,39 @@ export default function Home() {
     <MinecraftLayout setDayOrNight={handleDayChange}>
       <div className="min-h-screen pt-20 relative">
         {/* Background Decorative Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none stars-background">
           {day ? (
-            <>
-              <div className="absolute top-20 left-10 w-4 h-4 bg-blue-400 rounded-full opacity-20 animate-pulse"></div>
-              <div className="absolute top-40 right-20 w-6 h-6 bg-green-400 rounded-full opacity-15 animate-bounce"></div>
-              <div className="absolute bottom-40 left-1/4 w-3 h-3 bg-purple-400 rounded-full opacity-25 animate-pulse"></div>
-              <div className="absolute bottom-60 right-1/3 w-5 h-5 bg-yellow-400 rounded-full opacity-20 animate-bounce"></div>
-            </>
+            // No animations in light mode
+            null
           ) : (
             <>
-              {/* Additional Stars for Night Mode */}
-              {[...Array(200)].map((_, i) => (
+              {/* Subtle Background Stars for Night Mode */}
+              {[...Array(80)].map((_, i) => (
                 <div
                   key={i}
-                  className="absolute w-1 h-1 bg-white rounded-full opacity-70 animate-pulse"
+                  className={`absolute bg-white rounded-full ${
+                    Math.random() > 0.7 ? 'w-1 h-1 opacity-30' :
+                    Math.random() > 0.4 ? 'w-0.5 h-0.5 opacity-20' :
+                    'w-px h-px opacity-15'
+                  } animate-pulse`}
                   style={{
                     top: `${Math.random() * 100}%`,
                     left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 3}s`,
-                    animationDuration: `${2 + Math.random() * 2}s`,
+                    animationDelay: `${Math.random() * 5}s`,
+                    animationDuration: `${3 + Math.random() * 4}s`,
+                  }}
+                />
+              ))}
+              {/* Twinkling stars with different sizes */}
+              {[...Array(15)].map((_, i) => (
+                <div
+                  key={`twinkle-${i}`}
+                  className="absolute w-1 h-1 bg-white rounded-full opacity-40"
+                  style={{
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animation: `twinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
+                    animationDelay: `${Math.random() * 4}s`,
                   }}
                 />
               ))}
@@ -65,10 +78,10 @@ export default function Home() {
           )}
         </div>
 
-        <Hero day={day} />
+        <div className="relative z-10"><Hero day={day} /></div>
         
         {/* Stats Section */}
-        <section className="py-12 px-4">
+        <section className="py-12 px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className={`nes-container is-rounded text-center p-6 hover:scale-105 transition-transform duration-300 ${day ? 'bg-white' : 'is-dark'}`}>
@@ -95,7 +108,7 @@ export default function Home() {
           </div>
         </section>
         {/* Projects Section */}
-        <section id="projects" className="py-16 px-4 scroll-mt-20 relative">
+        <section id="projects" className="py-16 px-4 scroll-mt-20 relative z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent"></div>
           <div className="max-w-6xl mx-auto relative z-10">
             <h2 className="text-4xl font-bold mb-8 text-center nes-text is-primary">🚀 Featured Projects</h2>
@@ -105,7 +118,7 @@ export default function Home() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-16 px-4 scroll-mt-20 relative">
+        <section id="skills" className="py-16 px-4 scroll-mt-20 relative z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-500/5 to-transparent"></div>
           <div className="max-w-6xl mx-auto relative z-10">
             <h2 className="text-4xl font-bold mb-8 text-center nes-text is-primary">⚡ Skills & Technologies</h2>
@@ -115,7 +128,7 @@ export default function Home() {
         </section>
 
         {/* Work Experience Section */}
-        <section id="experience" className="py-16 px-4 scroll-mt-20 relative">
+        <section id="experience" className="py-16 px-4 scroll-mt-20 relative z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-yellow-500/5 to-transparent"></div>
           <div className="max-w-6xl mx-auto relative z-10">
             <h2 className="text-4xl font-bold mb-8 text-center nes-text is-primary">💼 Work Experience</h2>
@@ -125,7 +138,7 @@ export default function Home() {
         </section>
 
         {/* Education Section */}
-        <section id="education" className="py-16 px-4 scroll-mt-20 relative">
+        <section id="education" className="py-16 px-4 scroll-mt-20 relative z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-500/5 to-transparent"></div>
           <div className="max-w-6xl mx-auto relative z-10">
             <Education day={day} />
@@ -133,7 +146,7 @@ export default function Home() {
         </section>
 
         {/* Call to Action Section */}
-        <section className="py-20 px-4 relative">
+        <section className="py-20 px-4 relative z-10">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-lg"></div>
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <div className={`nes-container is-rounded p-8 shadow-2xl ${day ? 'bg-gradient-to-r from-blue-50 to-purple-50' : 'is-dark bg-gradient-to-r from-gray-800 to-gray-700'}`}>
@@ -161,7 +174,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <Contact day={day} />
+        <div className="relative z-10"><Contact day={day} /></div>
       </div>
     </MinecraftLayout>
   );
