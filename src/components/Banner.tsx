@@ -14,8 +14,13 @@ import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi';
 export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDayNight: () => void }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [currentTrack, setCurrentTrack] = useState('');
     const audioRef = useRef<HTMLAudioElement>(null);
     const navButtonClass = `header-nes-btn pixelated touch-manipulation hover:scale-105 active:scale-95 transition-transform duration-200 ${day ? '' : 'header-nes-btn-dark'}`;
+    
+    // Music tracks for different modes
+    const lightModeTrack = '/Attack on Titan 8-bit.mp3';
+    const darkModeTrack = '/Kamado Tanjiro 8bit.mp3';
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -39,17 +44,48 @@ export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDa
         }
     };
 
+    // Effect to handle music track switching based on day/night mode
+    useEffect(() => {
+        const newTrack = day ? lightModeTrack : darkModeTrack;
+        
+        if (currentTrack !== newTrack) {
+            const wasPlaying = isPlaying;
+            const currentTime = audioRef.current?.currentTime || 0;
+            
+            // Pause current track if playing
+            if (audioRef.current && isPlaying) {
+                audioRef.current.pause();
+            }
+            
+            setCurrentTrack(newTrack);
+            
+            // Small delay to ensure track change is processed
+            setTimeout(() => {
+                if (audioRef.current && wasPlaying) {
+                    audioRef.current.currentTime = 0; // Start new track from beginning
+                    audioRef.current.play().then(() => {
+                        setIsPlaying(true);
+                    }).catch(() => {
+                        setIsPlaying(false);
+                    });
+                }
+            }, 100);
+        }
+    }, [day, currentTrack, isPlaying]);
+
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.loop = true;
             audioRef.current.volume = 0.3;
             
+            // Set initial track
+            const initialTrack = day ? lightModeTrack : darkModeTrack;
+            setCurrentTrack(initialTrack);
+            
             // Restore music state from localStorage
             const wasMusicPlaying = localStorage.getItem('musicPlaying') === 'true';
-            const savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
             
             if (wasMusicPlaying) {
-                audioRef.current.currentTime = savedTime;
                 audioRef.current.play().then(() => {
                     setIsPlaying(true);
                 }).catch(() => {
@@ -256,8 +292,9 @@ export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDa
             </div>
             <audio
                 ref={audioRef}
-                src="/Attack on Titan ED7「Akuma no Ko」8-bit.mp3"
+                src={currentTrack}
                 preload="auto"
+                key={currentTrack}
             />
         </div>
     );
