@@ -11,15 +11,15 @@ const Education = ({ day }: { day: boolean }) => {
         {/* Main Header with Pixelated NES Container */}
         <div className={`nes-container is-rounded p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 max-w-2xl mx-auto education-header-container touch-manipulation ${day ? 'bg-gray-200' : 'is-dark bg-gray-900'}`}>
           <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-2 flex-wrap">
-            <i className={`nes-icon trophy text-lg sm:text-xl md:text-2xl ${day ? 'text-yellow-600' : 'text-yellow-400'}`}></i>
+            <span className={`text-lg sm:text-xl md:text-2xl ${day ? 'text-yellow-600' : 'text-yellow-400'}`}>🏆</span>
             <h3 className={`pixel-text text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold ${day ? 'text-yellow-600' : 'text-yellow-400'} text-center`}>EDUCATION JOURNEY</h3>
-            <i className={`nes-icon trophy text-lg sm:text-xl md:text-2xl ${day ? 'text-yellow-600' : 'text-yellow-400'}`}></i>
+            <span className={`text-lg sm:text-xl md:text-2xl ${day ? 'text-yellow-600' : 'text-yellow-400'}`}>🏆</span>
           </div>
           <div className="flex justify-center gap-2 sm:gap-3">
-            <i className="nes-icon star text-blue-400 text-sm sm:text-base"></i>
-            <i className="nes-icon heart text-red-400 text-sm sm:text-base"></i>
-            <i className="nes-icon like text-green-400 text-sm sm:text-base"></i>
-            <i className="nes-icon close text-purple-400 text-sm sm:text-base"></i>
+            <span className="text-blue-400 text-sm sm:text-base">⭐</span>
+            <span className="text-red-400 text-sm sm:text-base">❤️</span>
+            <span className="text-green-400 text-sm sm:text-base">👍</span>
+            <span className="text-purple-400 text-sm sm:text-base">❌</span>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@ const Education = ({ day }: { day: boolean }) => {
                     <div className={`nes-container is-rounded education-info-card touch-manipulation hover:scale-105 active:scale-95 transition-transform duration-200 ${day ? 'bg-white' : 'is-dark'}`}>
                       <p className={`nes-text ${day ? 'text-blue-600' : 'text-blue-200'}`}>
                         <strong className={`flex items-center gap-1 sm:gap-2 pixel-text text-xs sm:text-sm ${day ? 'text-blue-700' : 'text-blue-400'}`}>
-                          <i className="nes-icon home text-sm sm:text-base"></i>
+                          <span className="text-sm sm:text-base">🏛️</span>
                           INSTITUTION
                         </strong><br />
                         <span className={`font-bold text-xs sm:text-sm md:text-base lg:text-lg pixel-text ${day ? 'text-gray-800' : 'text-white'} break-words leading-tight`}>{edu.institution}</span>
@@ -74,7 +74,7 @@ const Education = ({ day }: { day: boolean }) => {
                     <div className={`nes-container is-rounded education-info-card touch-manipulation hover:scale-105 active:scale-95 transition-transform duration-200 ${day ? 'bg-white' : 'is-dark'}`}>
                       <p className={`nes-text ${day ? 'text-green-600' : 'text-green-200'}`}>
                         <strong className={`flex items-center gap-1 sm:gap-2 pixel-text text-xs sm:text-sm ${day ? 'text-green-700' : 'text-green-400'}`}>
-                          <i className="nes-icon clock text-sm sm:text-base"></i>
+                          <span className="text-sm sm:text-base">📅</span>
                           YEAR
                         </strong><br />
                         <span className={`font-bold text-xs sm:text-sm md:text-base lg:text-lg pixel-text ${day ? 'text-gray-800' : 'text-white'}`}>{edu.year}</span>
@@ -84,7 +84,7 @@ const Education = ({ day }: { day: boolean }) => {
                       <div className={`nes-container is-rounded education-info-card touch-manipulation hover:scale-105 active:scale-95 transition-transform duration-200 ${day ? 'bg-white' : 'is-dark'}`}>
                         <p className={`nes-text ${day ? 'text-purple-600' : 'text-purple-200'}`}>
                           <strong className={`flex items-center gap-1 sm:gap-2 pixel-text text-xs sm:text-sm ${day ? 'text-purple-700' : 'text-purple-400'}`}>
-                            <i className="nes-icon map text-sm sm:text-base"></i>
+                            <span className="text-sm sm:text-base">📍</span>
                             LOCATION
                           </strong><br />
                           <span className={`font-bold text-xs sm:text-sm md:text-base lg:text-lg pixel-text ${day ? 'text-gray-800' : 'text-white'} break-words leading-tight`}>{edu.location}</span>
@@ -99,7 +99,7 @@ const Education = ({ day }: { day: boolean }) => {
                         <div className="flex-1">
                           <p className="nes-text text-yellow-200 mb-1">
                             <strong className="text-yellow-400 flex items-center gap-2 pixel-text text-sm">
-                              <i className="nes-icon star text-lg"></i>
+                              <span className="text-lg">⭐</span>
                               GPA SCORE
                             </strong>
                           </p>
@@ -120,7 +120,7 @@ const Education = ({ day }: { day: boolean }) => {
                     <div className={`nes-container is-rounded education-desc-card border-4 border-purple-500 ${day ? 'bg-white' : 'is-dark'}`}>
                       <p className="nes-text text-purple-200">
                         <strong className="text-purple-400 flex items-center gap-2 pixel-text text-sm mb-3">
-                          <i className="nes-icon book text-lg"></i>
+                          <span className="text-lg">📚</span>
                           HIGHLIGHTS
                         </strong>
                         <div className={`text-xs sm:text-sm md:text-base pixel-text leading-relaxed ${day ? 'text-gray-700' : 'text-white'}`}>
