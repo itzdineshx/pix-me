@@ -656,3 +656,85 @@ img, [class*="icon"], svg {
     animation-delay: 2.75s;
     animation-duration: 2.75s;
 }
+
+/* Enhanced Responsive & Touch Interactions */
+.touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 640px) {
+    .nes-container {
+        margin: 0.5rem;
+        padding: 1rem !important;
+    }
+    
+    .nes-btn {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 0.75rem 1rem;
+        font-size: 0.75rem;
+    }
+    
+    .education-card {
+        margin-bottom: 1rem;
+    }
+    
+    .education-timeline-dot {
+        transform: scale(0.8);
+    }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .nes-container {
+        padding: 1.5rem !important;
+    }
+    
+    .education-timeline-dot {
+        transform: scale(0.9);
+    }
+}
+
+/* Enhanced hover states for touch devices */
+@media (hover: hover) {
+    .nes-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Active states for touch interactions */
+.nes-container:active,
+.nes-btn:active {
+    transform: scale(0.98);
+}
+
+/* Line clamping utility */
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Focus styles for accessibility */
+.nes-btn:focus,
+.nes-container:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling for touch devices */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Better text rendering on mobile */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}

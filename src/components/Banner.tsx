@@ -15,7 +15,15 @@ export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDa
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
-    const navButtonClass = `header-nes-btn pixelated ${day ? '' : 'header-nes-btn-dark'}`;
+    const navButtonClass = `header-nes-btn pixelated touch-manipulation hover:scale-105 active:scale-95 transition-transform duration-200 ${day ? '' : 'header-nes-btn-dark'}`;
+
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const closeMenu = () => {
+        setIsOpen(false);
+    };
 
     const toggleMusic = () => {
         if (audioRef.current) {

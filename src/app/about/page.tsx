@@ -169,7 +169,7 @@ export default function AboutPage() {
 
             {/* Education Section */}
             <div className="mb-16">
-              <Education />
+              <Education day={day} />
             </div>
 
             {/* Fun Facts Section - Pixelated Style */}
