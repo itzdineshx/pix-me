@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { Press_Start_2P } from 'next/font/google';
 import GlobalShootingStars from "@/components/GlobalShootingStars";
 import StructuredData from "@/components/StructuredData";
+import GlobalAudio from '@/components/GlobalAudio';
 
 export const metadata: Metadata = {
   title: {
@@ -99,6 +100,7 @@ export default function RootLayout({
         className="minecraft-world bg-green-200 font-pixel min-h-screen text-gray-800"
       >
         <GlobalShootingStars />
+        <GlobalAudio />
         <main>
           {children}
         </main>

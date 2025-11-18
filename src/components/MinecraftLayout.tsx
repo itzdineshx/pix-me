@@ -3,13 +3,11 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import PortalOverlay from './PortalOverlay';
 import Banner from './Banner';
 import { siteConfig } from '@/config/site';
 
 export default function MinecraftLayout({ children, setDayOrNight }: { children: React.ReactNode, setDayOrNight?: (day: boolean) => void }) {
     const [day, setDay] = useState(true);
-    const [isEntered, setIsEntered] = useState(false);
     const [clouds, setClouds] = useState<any[]>([]);
     const pathname = usePathname();
 
@@ -46,9 +44,6 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
         }
     }, [day, setDayOrNight]);
 
-    // Show portal overlay only on home page
-    const showPortal = pathname === '/' || pathname === '/home';
-
     return (
         <motion.div
             className={`minecraft-world ${day ? 'day' : 'night'} relative min-h-screen flex flex-col overflow-hidden z-0`}
@@ -58,13 +53,6 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
             transition={{ duration: 0.6 }}
         >
             <Banner day={day} toggleDayNight={toggleDayNight} />
-            <AnimatePresence>
-                {showPortal && !isEntered && (
-                    <PortalOverlay day={day} onEnter={() => {
-                        setIsEntered(true);
-                    }} />
-                )}
-            </AnimatePresence>
             <AnimatePresence>
                 {day ? (
                     <>
@@ -165,11 +153,8 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
                     </motion.div>
                 )}
             </AnimatePresence>
-            {isEntered && (
-                <div className="relative z-20 pt-8">{children}</div>
-            )}
-            {isEntered && (
-                                <footer className={`nes-container is-rounded ${day ? "bg-blue-200" : "is-dark"} text-center py-8 px-4 relative overflow-hidden`}>
+            <div className="relative z-20 pt-8">{children}</div>
+            <footer className={`nes-container is-rounded ${day ? "bg-blue-200" : "is-dark"} text-center py-8 px-4 relative overflow-hidden`}>
                     {day && (
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
                             {clouds.map((cloud, i) => (
@@ -282,7 +267,6 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
                         </div>
                     </div>
                 </footer>
-            )}
         </motion.div>
     );
 }

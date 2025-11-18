@@ -97,9 +97,76 @@ export default function PortalOverlay({ day, onEnter }: PortalOverlayProps) {
     const router = useRouter();
 
     const handleClick = () => {
+        // Play music immediately as part of the user gesture (avoid autoplay block)
+        try {
+            if (typeof window !== 'undefined') {
+                const lightModeTrack = '/Attack on Titan 8-bit.mp3';
+                const darkModeTrack = '/Kamado Tanjiro 8bit.mp3';
+                const track = day ? lightModeTrack : darkModeTrack;
+
+                localStorage.setItem('musicPlaying', 'true');
+                localStorage.setItem('musicCurrentTime', '0');
+
+                const audioEl = document.querySelector('audio') as HTMLAudioElement | null;
+                if (audioEl) {
+                    audioEl.src = track;
+                    audioEl.loop = true;
+                    audioEl.volume = 0; // start muted for fade in
+                    audioEl.play().catch(() => {
+                        // ignore playback errors; Banner will retry
+                    });
+
+                    // quick fade-in
+                    let vol = 0;
+                    const fade = setInterval(() => {
+                        vol = Math.min(0.3, vol + 0.05);
+                        audioEl.volume = vol;
+                        if (vol >= 0.3) clearInterval(fade);
+                    }, 50);
+                }
+            }
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.warn('Failed to play music on portal open gesture', err);
+        }
+
         setClicked(true);
         // Navigate to solar system after animation
         setTimeout(() => {
+            // Play background music associated with current mode (day/night)
+            // before starting the journey; treat this as a user gesture so
+            // audio playback is allowed in modern browsers.
+            if (typeof window !== 'undefined') {
+                try {
+                    const lightModeTrack = '/Attack on Titan 8-bit.mp3';
+                    const darkModeTrack = '/Kamado Tanjiro 8bit.mp3';
+                    const track = day ? lightModeTrack : darkModeTrack;
+
+                    // Persist preference and start playback via the page audio element
+                    localStorage.setItem('musicPlaying', 'true');
+                    localStorage.setItem('musicCurrentTime', '0');
+
+                    const audioEl = document.querySelector('audio') as HTMLAudioElement | null;
+                    if (audioEl) {
+                        audioEl.src = track;
+                        audioEl.loop = true;
+                        audioEl.volume = 0.3;
+                        // Play - allowed because this is a gesture handler
+                        audioEl.play().catch(() => {
+                            // ignore playback errors; Banner will attempt to resume later
+                        });
+                    }
+                } catch (err) {
+                    // Don't block navigation on errors
+                    // eslint-disable-next-line no-console
+                    console.warn('Error while attempting to play background music', err);
+                }
+            }
+
+            // Mark portal as entered (persist enter state) and go to solar system
+            if (typeof window !== 'undefined' && typeof onEnter === 'function') {
+                onEnter();
+            }
             router.push('/solar-system');
         }, 800);
     };

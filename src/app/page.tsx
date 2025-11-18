@@ -1,7 +1,11 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import Hero from '@/components/Hero';
+import PortalOverlay from '@/components/PortalOverlay';
+import PortalToast from '@/components/PortalToast';
+import PortalQuickButton from '@/components/PortalQuickButton';
 import Education from '@/components/Education';
 import Contact from '@/components/Contact';
 import MinecraftLayout from '@/components/MinecraftLayout';
@@ -12,10 +16,73 @@ import Link from 'next/link';
 import { loadIcon } from '@/helpers/iconLoader';
 
 export default function Home() {
+  const [showPortalToast, setShowPortalToast] = useState(false);
   const [day, setDay] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPortalOverlay, setShowPortalOverlay] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
+    // Check if this is first visit or if cache expired
+    if (typeof window !== 'undefined') {
+      const hasEnteredPortal = localStorage.getItem('portalEntered');
+      const lastEnterTime = localStorage.getItem('portalEnterTime');
+      const currentTime = Date.now();
+      const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+      
+      // No automatic portal/page — use a toast instead.
+      // If portal has never been entered, don't auto-redirect — we will
+      // offer a toast instead. This avoids forced navigations.
+      if (lastEnterTime) {
+        const timeSinceEnter = currentTime - parseInt(lastEnterTime);
+        if (timeSinceEnter >= CACHE_DURATION) {
+          // Cache expired, clear and don't redirect (stay on home)
+          localStorage.removeItem('portalEnterTime');
+        }
+      }
+
+      // No automatic portal/showing — use a toast instead.
+      // Show the portal toast on first visit or after TTL expiration, but
+      // respect the hidePortalUntil flag which hides the toast for 30 minutes
+      // after landing.
+      const hidePortalUntil = Number(localStorage.getItem('hidePortalUntil') || 0);
+      // If there is no portalEnterTime recorded (older state or lost timestamp),
+      // treat it as expired so we can re-show the portal toast — this helps when
+      // users entered before we started recording portalEnterTime.
+      const lastEnterTimeNum = lastEnterTime ? parseInt(lastEnterTime) : 0;
+      const shouldShowBecauseNotEntered = hasEnteredPortal !== 'true';
+      const shouldShowBecauseExpired = lastEnterTimeNum === 0 || (currentTime - lastEnterTimeNum >= CACHE_DURATION);
+      // Debug information to help trace why toast may not appear
+      // (useful during development and tests)
+      // eslint-disable-next-line no-console
+      console.debug('[Portal] show candidates', {
+        hasEnteredPortal,
+        lastEnterTime,
+        currentTime,
+        hidePortalUntil,
+        shouldShowBecauseNotEntered,
+        shouldShowBecauseExpired,
+        willShow: Date.now() > hidePortalUntil && (shouldShowBecauseNotEntered || shouldShowBecauseExpired),
+      });
+
+      // If a user has never entered (first visit) then show the overlay as a
+      // welcome. If the user has entered before and TTL expired, show toast
+      // instead of overlay.
+      if (Date.now() > hidePortalUntil && shouldShowBecauseNotEntered) {
+        // Show overlay for first-time visitors as a welcome.
+        // Do not mark portal as entered until user taps "EXPLORE MY WORK".
+        // eslint-disable-next-line no-console
+        console.debug('[Portal] first visit - show overlay');
+        setShowPortalOverlay(true);
+        setShowPortalToast(false);
+      } else if (Date.now() > hidePortalUntil && shouldShowBecauseExpired) {
+        // Debug state before showing toast
+        // eslint-disable-next-line no-console
+        console.debug('[Portal] will set toast visible');
+        setShowPortalToast(true);
+      }
+    }
+
     const hour = new Date().getHours();
     setDay(hour >= 6 && hour < 18);
 
@@ -25,10 +92,43 @@ export default function Home() {
     }, 3000); // Show loading for 3 seconds
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [router]);
+
+  useEffect(() => {
+    // Debug when toast visibility changes
+    // eslint-disable-next-line no-console
+    console.debug('[Portal] showPortalToast toggled', showPortalToast);
+  }, [showPortalToast]);
 
   const handleDayChange = (isDay: boolean) => {
     setDay(isDay);
+  };
+
+  const handleEnterHome = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portalEntered', 'true');
+      localStorage.setItem('portalEnterTime', Date.now().toString());
+    }
+    // If we are showing the overlay on home, close it; navigation to solar
+    // system is handled by PortalOverlay after onEnter is called.
+    setShowPortalOverlay(false);
+  };
+
+  useEffect(() => {
+    if (showPortalOverlay && showPortalToast) {
+      setShowPortalToast(false);
+    }
+  }, [showPortalOverlay, showPortalToast]);
+
+  const clearPortalState = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('portalEntered');
+      localStorage.removeItem('portalEnterTime');
+      localStorage.removeItem('hidePortalUntil');
+      localStorage.removeItem('showPortalAfterLanding');
+      // Show the toast again immediately so QA can test
+      setShowPortalToast(true);
+    }
   };
 
   if (isLoading) {
@@ -80,9 +180,24 @@ export default function Home() {
         </div>
 
         <div className="relative z-10"><Hero day={day} /></div>
-        
+        {/* Show portal overlay in-place if we returned from Solar System */}
+        {showPortalOverlay && (
+          <div className="fixed inset-0 z-50">
+            <PortalOverlay day={day} onEnter={handleEnterHome} />
+          </div>
+        )}
+                
         {/* Stats Section */}
         <section className="py-12 px-4 relative z-10">
+          {/* Portal toast shown at the end of layout so it's above other elements */}
+          {showPortalToast && (
+            <PortalToast onOpenOverlay={() => { setShowPortalOverlay(true); setShowPortalToast(false); }} />
+          )}
+
+          {/* Small quick button for opening the portal overlay (planet) - hide when overlay is open */}
+          {!showPortalOverlay && (
+            <PortalQuickButton onOpen={() => { setShowPortalOverlay(true); setShowPortalToast(false); }} />
+          )}
           <div className="max-w-6xl mx-auto">
             <div className="home-stats-grid grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className={`nes-container is-rounded text-center p-6 hover:scale-105 transition-transform duration-300 ${day ? 'bg-white' : 'is-dark'}`}>

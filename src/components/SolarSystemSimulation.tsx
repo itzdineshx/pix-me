@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect, Suspense, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useRouter } from 'next/navigation';
 import { 
   ScrollControls, 
   useScroll, 
@@ -97,6 +98,14 @@ class AudioSystem {
     
     oscillator.start(this.context.currentTime);
     oscillator.stop(this.context.currentTime + 2);
+  }
+
+  // Landing sound
+  playLandingSound() {
+    const frequencies = [659.25, 523.25, 392.00, 329.63, 261.63]; // E-C-G-E-C (descending)
+    frequencies.forEach((freq, i) => {
+      setTimeout(() => this.playBeep(freq, 0.2, 'sine'), i * 150);
+    });
   }
 }
 
@@ -336,13 +345,13 @@ const Spaceship = React.forwardRef<THREE.Group, SpaceshipProps>(({ scroll, path 
 Spaceship.displayName = 'Spaceship';
 
 // Chase camera that follows spaceship
-function ChaseCamera({ target }: { target: React.RefObject<THREE.Group | null> }) {
+function ChaseCamera({ target, isReturning }: { target: React.RefObject<THREE.Group | null>; isReturning: boolean }) {
   const { camera } = useThree();
   const idealPosition = useRef(new THREE.Vector3());
   const idealLookAt = useRef(new THREE.Vector3());
   
   useFrame(() => {
-    if (!target.current) return;
+    if (!target.current || isReturning) return; // Disable during return
     
     const shipPosition = target.current.position;
     
@@ -777,11 +786,204 @@ function CosmicClouds({ scroll }: { scroll: any }) {
   );
 }
 
+// Landing Animation Overlay
+function LandingOverlay({ onComplete }: { onComplete: () => void }) {
+  const [showPortal, setShowPortal] = useState(false);
+  
+  useEffect(() => {
+    // Show portal after 2.5 seconds (after landing animation)
+    const portalTimer = setTimeout(() => setShowPortal(true), 2500);
+    // Complete and redirect after 5.5 seconds total
+    const completeTimer = setTimeout(onComplete, 5500);
+    
+    return () => {
+      clearTimeout(portalTimer);
+      clearTimeout(completeTimer);
+    };
+  }, [onComplete]);
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 pointer-events-none"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      {/* Gentle landing fade overlay */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-b from-blue-900/60 via-cyan-500/40 to-transparent"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.6, 0.3, 0] }}
+        transition={{ duration: 2.5, times: [0, 0.4, 0.7, 1] }}
+      />
+
+      {/* Welcome Home text - appears after landing */}
+      {!showPortal && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.2 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
+          <motion.h1
+            className="text-7xl font-bold text-white pixel-text drop-shadow-2xl"
+            animate={{
+              textShadow: [
+                '0 0 20px rgba(59,130,246,0.8)',
+                '0 0 40px rgba(6,182,212,0.6)',
+                '0 0 20px rgba(59,130,246,0.8)',
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            Welcome Home!
+          </motion.h1>
+        </motion.div>
+      )}
+      
+      {/* Portal Animation */}
+      <AnimatePresence>
+        {showPortal && (
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Portal vortex background */}
+            <motion.div
+              className="absolute w-96 h-96 rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(6,182,212,0.8) 0%, rgba(59,130,246,0.6) 30%, rgba(147,51,234,0.4) 60%, transparent 100%)'
+              }}
+              animate={{
+                scale: [0.5, 1.5, 0.5],
+                rotate: [0, 360]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            
+            {/* Inner portal ring */}
+            <motion.div
+              className="absolute w-64 h-64 rounded-full border-4 border-cyan-400"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.6, 1, 0.6],
+                rotate: [0, -360]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Outer portal ring */}
+            <motion.div
+              className="absolute w-80 h-80 rounded-full border-2 border-purple-500"
+              animate={{
+                scale: [1.2, 1, 1.2],
+                opacity: [0.4, 0.8, 0.4],
+                rotate: [0, 360]
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Portal particles */}
+            {[...Array(30)].map((_, i) => {
+              const angle = (i / 30) * Math.PI * 2;
+              const radius = 150;
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 bg-cyan-300 rounded-full"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                  animate={{
+                    x: [0, Math.cos(angle) * radius, 0],
+                    y: [0, Math.sin(angle) * radius, 0],
+                    opacity: [0, 1, 0],
+                    scale: [0, 1, 0]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    delay: i * 0.05,
+                    ease: "easeOut"
+                  }}
+                />
+              );
+            })}
+            
+            {/* Portal center glow */}
+            <motion.div
+              className="absolute w-32 h-32 rounded-full bg-white"
+              animate={{
+                opacity: [0.3, 0.8, 0.3],
+                scale: [0.8, 1.2, 0.8]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            {/* Portal text */}
+            <motion.div
+              className="absolute text-center z-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <h2 className="text-4xl font-bold text-white pixel-text mb-2">
+                🌀 PORTAL ACTIVATED
+              </h2>
+              <p className="text-xl text-cyan-300 pixel-text">
+                Returning to Home Base...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 // Main 3D scene with horizontal scrolling
-function Scene() {
+function Scene({ onReturnComplete }: { onReturnComplete: () => void }) {
   const scroll = useScroll();
   const shipRef = useRef<THREE.Group | null>(null);
   const { camera } = useThree();
+  const [isReturning, setIsReturning] = useState(false);
+  const [returnProgress, setReturnProgress] = useState(0);
+  const [canReturn, setCanReturn] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  useEffect(() => {
+    // Prevent immediate return on mount (in case of scroll restoration)
+    // and try to reset scroll
+    if (scroll.el) {
+      scroll.el.scrollTop = 0;
+    }
+    
+    const timer = setTimeout(() => {
+      setCanReturn(true);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, [scroll.el]);
   
   // Create horizontal spline path through all planets
   const [path] = useState(() => {
@@ -799,8 +1001,135 @@ function Scene() {
   });
   
   // Enhanced camera effects for warp speed and smooth following
-  useFrame(() => {
-    const warpProgress = Math.max(0, (scroll.offset - 0.85) * 6.67);
+  useFrame((state, delta) => {
+    const scrollProgress = scroll.offset;
+
+    // Mark as started when user is at the beginning
+    if (!hasStarted && scrollProgress < 0.1) {
+      setHasStarted(true);
+    }
+    
+    // Detect when user reaches Pluto (95% of journey)
+    // Only trigger if we've started from the beginning (prevents loop on refresh)
+    if (canReturn && hasStarted && scrollProgress > 0.85 && !isReturning) {
+      setIsReturning(true);
+      audioSystem.playWarpSound();
+      
+      // Update UI to show return journey
+      const planetName = document.getElementById('planet-name');
+      const planetInfo = document.getElementById('planet-info');
+      if (planetName) planetName.textContent = '🔄 Returning to Earth';
+      if (planetInfo) planetInfo.textContent = 'Initiating return sequence...';
+    }
+    
+    // Handle return journey
+    if (isReturning) {
+      setReturnProgress(prev => {
+        const newProgress = prev + delta * 0.08; // Slower, smoother return speed
+        
+        if (newProgress >= 1) {
+          // Landing sequence complete
+          audioSystem.playLandingSound();
+          setTimeout(() => {
+            onReturnComplete();
+          }, 500);
+          return 1;
+        }
+        
+        return newProgress;
+      });
+      
+      // Animate ship returning to Earth
+      if (shipRef.current) {
+        const earthPos = PLANETS.find(p => p.name === 'Earth')?.position || new THREE.Vector3(140, 0, 0);
+        const startPos = PLANETS[PLANETS.length - 1].position;
+        const t = returnProgress;
+        
+        // Smooth interpolation back to Earth with arc trajectory
+        const currentX = startPos.x + (earthPos.x - startPos.x) * t;
+        const currentY = 3 + Math.sin(t * Math.PI) * 12; // Higher arc trajectory
+        const currentZ = 10 + (2 - 10) * t; // Move closer to Earth
+        
+        shipRef.current.position.set(currentX, currentY, currentZ);
+        
+        // Rotate ship to face Earth during return
+        shipRef.current.lookAt(earthPos);
+        
+        // Camera follows ship throughout entire return journey with close POV
+        if (t < 0.5) {
+          // Phase 1: Close follow behind ship (first-person travel view)
+          const offset = new THREE.Vector3(-6, 3, 0); // Closer behind ship
+          const shipRotation = shipRef.current.quaternion;
+          offset.applyQuaternion(shipRotation);
+          
+          const cameraTarget = new THREE.Vector3().copy(shipRef.current.position).add(offset);
+          camera.position.lerp(cameraTarget, 0.08);
+          camera.lookAt(shipRef.current.position);
+          
+          // Slightly wider FOV for travel feel
+          if (camera instanceof THREE.PerspectiveCamera) {
+            camera.fov = THREE.MathUtils.lerp(camera.fov, 80, 0.05);
+            camera.updateProjectionMatrix();
+          }
+        } else if (t < 0.75) {
+          // Phase 2: Close side-follow as Earth approaches
+          const followT = (t - 0.5) / 0.25;
+          const offset = new THREE.Vector3(
+            -5 - followT * 2, // Move slightly to side
+            3 + followT * 2,  // Move up slightly
+            8 - followT * 2   // Move closer
+          );
+          
+          const shipRotation = shipRef.current.quaternion;
+          offset.applyQuaternion(shipRotation);
+          
+          const cameraTarget = new THREE.Vector3().copy(shipRef.current.position).add(offset);
+          camera.position.lerp(cameraTarget, 0.06);
+          
+          // Look at Earth as it comes into view
+          const lookTarget = new THREE.Vector3().lerpVectors(
+            shipRef.current.position,
+            earthPos,
+            followT
+          );
+          camera.lookAt(lookTarget);
+        } else {
+          // Phase 3: Dramatic landing approach (very close POV)
+          const landingT = (t - 0.75) / 0.25;
+          
+          // Camera gets very close to Earth surface
+          const closeUpPos = new THREE.Vector3(
+            earthPos.x,
+            earthPos.y + 25 * (1 - landingT * 0.85), // Descend close to surface
+            earthPos.z + 30 * (1 - landingT * 0.92)  // Zoom in very close
+          );
+          camera.position.lerp(closeUpPos, 0.12);
+          camera.lookAt(earthPos);
+          
+          // Gradually increase FOV for immersive landing effect
+          if (camera instanceof THREE.PerspectiveCamera) {
+            camera.fov = THREE.MathUtils.lerp(camera.fov, 85 + landingT * 15, 0.1);
+            camera.updateProjectionMatrix();
+          }
+        }
+        
+        // Update speed display
+        const speedDisplay = document.getElementById('speed-display');
+        if (speedDisplay) {
+          const speed = Math.round((1 - t) * 45000);
+          speedDisplay.textContent = `${speed.toLocaleString()} km/s`;
+        }
+        
+        const progressDisplay = document.getElementById('progress-display');
+        if (progressDisplay) {
+          progressDisplay.textContent = `Return: ${Math.round(t * 100)}%`;
+        }
+      }
+      
+      return; // Skip normal scroll behavior during return
+    }
+    
+    const warpProgress = Math.max(0, (scrollProgress - 0.85) * 6.67);
     
     // Warp speed camera zoom and shake
     if (camera instanceof THREE.PerspectiveCamera) {
@@ -872,7 +1201,7 @@ function Scene() {
       <Spaceship scroll={scroll} path={path} ref={shipRef} />
       
       {/* Chase camera */}
-      <ChaseCamera target={shipRef} />
+      <ChaseCamera target={shipRef} isReturning={isReturning} />
       
       {/* Orbital Paths */}
       {PLANETS.slice(1).map((planet, index) => (
@@ -981,6 +1310,8 @@ function LoadingScreen() {
 // Main component
 export default function SolarSystemSimulation() {
   const [loading, setLoading] = useState(true);
+  const [isLanding, setIsLanding] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     // Simulate loading time
@@ -990,6 +1321,45 @@ export default function SolarSystemSimulation() {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Ensure background audio continues when entering /solar-system
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const audioEl = document.getElementById('global-audio') as HTMLAudioElement | null;
+      if (audioEl && localStorage.getItem('musicPlaying') === 'true') {
+        // If audio has no source, choose a day/night track
+        if (!audioEl.src) {
+          const lightModeTrack = '/Attack on Titan 8-bit.mp3';
+          const darkModeTrack = '/Kamado Tanjiro 8bit.mp3';
+          const hour = new Date().getHours();
+          const isDay = hour >= 6 && hour < 18;
+          audioEl.src = isDay ? lightModeTrack : darkModeTrack;
+          audioEl.loop = true;
+        }
+
+        audioEl.play().catch(() => {
+          // ignore playback errors, possibly blocked by browser; user gesture required
+        });
+      }
+    }
+  }, []);
+
+  const handleReturnComplete = useCallback(() => {
+    setIsLanding(true);
+  }, []);
+
+  const handleLandingComplete = useCallback(() => {
+    // After completing the voyage, hide the portal for the next 30 minutes.
+    if (typeof window !== 'undefined') {
+      const CACHE_DURATION = 30 * 60 * 1000;
+      const hideUntil = Date.now() + CACHE_DURATION;
+      localStorage.setItem('hidePortalUntil', hideUntil.toString());
+      // Keep a record of portal enter time in session storage for other logic
+      localStorage.setItem('portalEnterTime', Date.now().toString());
+    }
+    // Navigate back to home so home can control the single redirect to /portal
+    router.push('/');
+  }, [router]);
 
   if (loading) {
     return <LoadingScreen />;
@@ -1007,8 +1377,8 @@ export default function SolarSystemSimulation() {
         style={{ background: '#000' }}
       >
         <Suspense fallback={null}>
-          <ScrollControls pages={10} damping={0.2} enabled={true}>
-            <Scene />
+          <ScrollControls pages={10} damping={0.2} enabled={!isLanding}>
+            <Scene onReturnComplete={handleReturnComplete} />
           </ScrollControls>
           
           {/* Enhanced post-processing for 8-bit aesthetic */}
@@ -1041,6 +1411,11 @@ export default function SolarSystemSimulation() {
           </div>
         </motion.div>
       </div>
+
+      {/* Landing animation overlay */}
+      <AnimatePresence>
+        {isLanding && <LandingOverlay onComplete={handleLandingComplete} />}
+      </AnimatePresence>
 
     </div>
   );
