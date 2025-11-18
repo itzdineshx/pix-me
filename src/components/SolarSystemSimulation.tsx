@@ -148,49 +148,54 @@ const Spaceship = React.forwardRef<THREE.Group, SpaceshipProps>(({ scroll, path 
     if (!groupRef.current || !path) return;
     
     const progress = scroll.offset;
-    const point = path.getPointAt(progress);
-    const tangent = path.getTangentAt(progress);
     
-    // Smooth movement with lerp
-    currentPosition.lerp(point, 0.08);
-    groupRef.current.position.copy(currentPosition);
-    
-    // Orient spaceship along path
-    const lookAtPoint = point.clone().add(tangent);
-    groupRef.current.lookAt(lookAtPoint);
+    // Safety check for path operations
+    try {
+      const point = path.getPointAt(progress);
+      if (!point) return;
+      
+      const tangent = path.getTangentAt(progress);
+      if (!tangent) return;
+      
+      // Smooth movement with lerp
+      currentPosition.lerp(point, 0.08);
+      groupRef.current.position.copy(currentPosition);
+      
+      // Orient spaceship along path
+      const lookAtPoint = point.clone().add(tangent);
+      groupRef.current.lookAt(lookAtPoint);
+    } catch (error) {
+      // Silently handle any path calculation errors
+      return;
+    }
     
     // Check for planet visits and trigger sounds + UI updates
-    const currentPlanetIndex = Math.floor(progress * (PLANETS.length - 1));
-    if (currentPlanetIndex !== lastPlanetIndex && currentPlanetIndex >= 0) {
-      setLastPlanetIndex(currentPlanetIndex);
-      if (currentPlanetIndex < PLANETS.length) {
+    // Use smoother calculation to detect planets earlier
+    const currentPlanetIndex = Math.round(progress * PLANETS.length);
+    const clampedIndex = Math.min(currentPlanetIndex, PLANETS.length - 1);
+    
+    if (clampedIndex !== lastPlanetIndex && clampedIndex >= 0) {
+      setLastPlanetIndex(clampedIndex);
+      if (clampedIndex < PLANETS.length) {
         audioSystem.playPlanetSound();
         
         // Update UI elements
-        const planet = PLANETS[currentPlanetIndex];
-        const progressBar = document.getElementById('journey-progress');
-        const planetInfo = document.getElementById('current-planet-info');
+        const planet = PLANETS[clampedIndex];
+        const planetName = document.getElementById('planet-name');
+        const progressDisplay = document.getElementById('progress-display');
+        const speedDisplay = document.getElementById('speed-display');
         
-        if (progressBar) {
-          (progressBar as HTMLProgressElement).value = (progress * 100);
+        if (planetName && planet) {
+          planetName.textContent = `🪐 ${planet.name}`;
         }
         
-        if (planetInfo && planet) {
-          if (currentPlanetIndex === PLANETS.length - 1) {
-            // Journey completion
-            planetInfo.innerHTML = `
-              <p class="text-green-400 text-lg">🎉 MISSION COMPLETE!</p>
-              <p class="text-xs text-gray-300 mt-1">You've successfully explored our entire solar system!</p>
-              <p class="text-xs text-yellow-300 mt-1">Thank you for this cosmic journey through my portfolio!</p>
-            `;
-            audioSystem.playLaunchSound(); // Celebratory sound
-          } else {
-            planetInfo.innerHTML = `
-              <p class="text-yellow-400 text-sm">🪐 ${planet.name}</p>
-              <p class="text-xs text-gray-300 mt-1">${planet.info}</p>
-              <p class="text-xs text-blue-300 mt-1">Destination ${currentPlanetIndex + 1} of ${PLANETS.length}</p>
-            `;
-          }
+        if (progressDisplay) {
+          progressDisplay.textContent = `${Math.round(progress * 100)}%`;
+        }
+        
+        if (speedDisplay) {
+          const speed = Math.round(progress * 50000); // Simulated speed
+          speedDisplay.textContent = `${speed.toLocaleString()} km/s`;
         }
       }
     }
@@ -1010,65 +1015,27 @@ export default function SolarSystemSimulation() {
         </Suspense>
       </Canvas>
       
-      {/* Enhanced UI Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-30">
-          {/* Top navigation info */}
-          <div className="absolute top-4 left-4 pixel-text pointer-events-auto">
-            <motion.div 
-              className="nes-container is-rounded bg-gradient-to-br from-black to-gray-900 bg-opacity-95 border-2 border-cyan-500 shadow-lg shadow-cyan-500/50"
-              initial={{ x: -100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 100 }}
-            >
-              <p className="text-white text-sm mb-2 font-bold">
-                🌌 <span className="text-cyan-400">SOLAR SYSTEM EXPLORER</span>
-              </p>
-              <p className="text-xs text-gray-300">
-                Scroll to navigate • 🚀 Travel with your spaceship
-              </p>
-              <motion.div 
-                className="mt-2 text-sm font-bold text-green-400"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                ⚡ SPEED: <span id="speed-display" className="text-yellow-300">0</span> km/s
-              </motion.div>
-            </motion.div>
+      {/* Minimal UI Container - Bottom center */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30 pointer-events-none">
+        <motion.div 
+          className="bg-black bg-opacity-70 backdrop-blur-sm px-4 py-2 rounded-lg border border-cyan-500 border-opacity-40 shadow-lg"
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <div id="current-planet-info" className="text-center">
+            <p className="text-cyan-400 text-xs font-bold">🚀 Scroll to explore</p>
+            <div className="flex items-center gap-3 mt-1 text-xs">
+              <span className="text-yellow-300" id="planet-name">Starting Journey</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-green-400" id="progress-display">0%</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-orange-400" id="speed-display">0 km/s</span>
+            </div>
           </div>
+        </motion.div>
+      </div>
 
-          {/* Journey Progress */}
-          <div className="absolute top-4 right-4 pixel-text">
-            <motion.div 
-              className="nes-container is-rounded bg-gradient-to-br from-black to-gray-900 bg-opacity-95 border-2 border-purple-500 shadow-lg shadow-purple-500/50"
-              initial={{ x: 100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
-            >
-              <p className="text-purple-400 text-sm font-bold mb-2">🚀 JOURNEY PROGRESS</p>
-              <div className="nes-progress">
-                <progress className="nes-progress is-primary" value="0" max="100" id="journey-progress"></progress>
-              </div>
-              <p className="text-xs text-gray-300 mt-2">🪐 Visit all {PLANETS.length} celestial bodies</p>
-            </motion.div>
-          </div>
-
-          {/* Planet Information Display */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 pixel-text">
-            <motion.div 
-              className="nes-container is-rounded bg-gradient-to-br from-black to-gray-900 bg-opacity-95 text-center max-w-md border-2 border-yellow-500 shadow-lg shadow-yellow-500/50"
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 100, delay: 0.4 }}
-            >
-              <div id="current-planet-info">
-                <p className="text-yellow-400 text-base font-bold">🌟 Welcome Space Explorer!</p>
-                <p className="text-sm text-gray-200 mt-2">
-                  Scroll down to begin your journey through our solar system
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
     </div>
   );
 }
