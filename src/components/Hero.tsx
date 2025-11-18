@@ -26,6 +26,7 @@ export default function Hero({ day }: { day: boolean }) {
                 <div className={`nes-balloon from-left ${day ? "" : "is-dark"}`}>
                     <p className="text-sm">{siteConfig.profile.summary}</p>
                 </div>
+
                 <div className="flex gap-2 flex-wrap justify-center">
                     <i className="nes-icon heart"></i>
                     <span className="nes-text is-primary">AI & Machine Learning</span>

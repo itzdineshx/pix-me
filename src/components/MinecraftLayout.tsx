@@ -13,12 +13,6 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
     const [clouds, setClouds] = useState<any[]>([]);
     const pathname = usePathname();
 
-    // Initialize isEntered from localStorage
-    useEffect(() => {
-        const entered = localStorage.getItem('portfolio-entered');
-        setIsEntered(entered === 'true');
-    }, []);
-
     // Generate clouds only on client side to avoid hydration mismatch
     useEffect(() => {
         const cloudCount = 15;
@@ -68,7 +62,6 @@ export default function MinecraftLayout({ children, setDayOrNight }: { children:
                 {showPortal && !isEntered && (
                     <PortalOverlay day={day} onEnter={() => {
                         setIsEntered(true);
-                        localStorage.setItem('portfolio-entered', 'true');
                     }} />
                 )}
             </AnimatePresence>

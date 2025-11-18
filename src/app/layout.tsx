@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "../styles/globals.css";
+import '../styles/globals.css';
+import '../styles/solarSystem.css';
 import { siteConfig } from "@/config/site";
 import { Press_Start_2P } from 'next/font/google';
 import GlobalShootingStars from "@/components/GlobalShootingStars";
