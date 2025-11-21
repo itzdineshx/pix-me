@@ -822,14 +822,14 @@ function LandingOverlay({ onComplete }: { onComplete: () => void }) {
       {/* Welcome Home text - appears after landing */}
       {!showPortal && (
         <motion.div
-          className="absolute inset-0 flex items-center justify-center"
+          className="absolute inset-0 flex items-center justify-center p-4"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.2 }}
           transition={{ delay: 0.5, duration: 1 }}
         >
           <motion.h1
-            className="text-7xl font-bold text-white pixel-text drop-shadow-2xl"
+            className="mx-4 px-2 text-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white pixel-text drop-shadow-2xl leading-tight"
             animate={{
               textShadow: [
                 '0 0 20px rgba(59,130,246,0.8)',
@@ -838,7 +838,7 @@ function LandingOverlay({ onComplete }: { onComplete: () => void }) {
               ]
             }}
             transition={{ duration: 2, repeat: Infinity }}
-          >
+            >
             Welcome Home!
           </motion.h1>
         </motion.div>
@@ -1452,17 +1452,17 @@ export default function SolarSystemSimulation() {
       </Canvas>
       
       {/* Minimal UI Container - Bottom center */}
-      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30 pointer-events-none solar-system-controls">
+      <div className="fixed bottom-6 md:left-1/2 md:transform md:-translate-x-1/2 z-[9999] pointer-events-auto solar-system-controls">
         <motion.div 
-          className="bg-black bg-opacity-70 backdrop-blur-sm px-4 py-2 rounded-lg border border-cyan-500 border-opacity-40 shadow-lg pointer-events-auto"
+          className="w-full sm:w-auto bg-black bg-opacity-70 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-lg border border-cyan-500 border-opacity-40 shadow-lg pointer-events-auto"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          <div id="current-planet-info" className="text-center">
+          <div id="current-planet-info" className="text-center flex flex-col sm:flex-row sm:items-center items-center gap-2 sm:gap-3">
             <div className="mb-2">
-              <p className="text-cyan-300 text-base font-bold" id="planet-name">🚀 Starting Journey</p>
-              <p className="text-gray-300 text-xs mt-1 leading-relaxed max-w-md mx-auto" id="planet-info">Scroll down to explore the solar system</p>
+              <p className="text-cyan-300 font-bold text-sm sm:text-base" id="planet-name">🚀 Starting Journey</p>
+              <p className="text-gray-300 text-xs mt-1 leading-relaxed max-w-full sm:max-w-md mx-auto" id="planet-info">Scroll down to explore the solar system</p>
             </div>
             <div className="flex items-center justify-center gap-3 text-xs border-t border-gray-700 pt-2">
               <span className="text-green-400" id="progress-display">0%</span>

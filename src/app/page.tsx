@@ -387,7 +387,7 @@ export default function Home() {
         </section>
 
         {/* Education Section */}
-        <section id="education" className="py-16 px-4 scroll-mt-20 relative z-10">
+        <section id="education" className="py-16 px-2 sm:px-4 scroll-mt-20 relative z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-500/5 to-transparent"></div>
           <div className="max-w-6xl mx-auto relative z-10">
             <Education day={day} />

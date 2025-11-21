@@ -119,20 +119,15 @@ section::after {
 
 /* Global pixelation for all images and icons */
 img, [class*="icon"], svg {
-  image-rendering: -moz-crisp-edges !important;
-  image-rendering: -webkit-crisp-edges !important;
+  /* Use modern and Edge-ready pixelation rendering */
   image-rendering: -webkit-optimize-contrast !important;
   image-rendering: pixelated !important;
-  image-rendering: crisp-edges !important;
 }
 
 /* Specific pixelation classes for enhanced effects */
 .pixelated {
-  image-rendering: -moz-crisp-edges !important;
-  image-rendering: -webkit-crisp-edges !important;
   image-rendering: -webkit-optimize-contrast !important;
   image-rendering: pixelated !important;
-  image-rendering: crisp-edges !important;
 }
 
 /* Enhanced pixelation for different elements */
@@ -945,9 +940,10 @@ img, [class*="icon"], svg {
 
 /* Line clamping utility */
 .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
@@ -961,7 +957,16 @@ img, [class*="icon"], svg {
 /* Smooth scrolling for touch devices */
 html {
     scroll-behavior: smooth;
+    /* Prevent font auto-scaling on mobile browsers that use -webkit-text-size-adjust */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Apply iOS-specific momentum scrolling only when supported */
+@supports (-webkit-overflow-scrolling: touch) {
+  html {
     -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Better text rendering on mobile */

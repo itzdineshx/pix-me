@@ -2,10 +2,9 @@
 
 /* Ensure pixelated rendering across the entire application */
 .solar-system-container {
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-crisp-edges;
+  /* Prefer Edge-friendly -webkit-optimize-contrast and pixelated for general pixelation */
+  image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 /* 8-bit cursor for interactive elements */
@@ -234,10 +233,8 @@
 
 /* Custom CSS for Canvas pixelation */
 canvas {
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 /* Mobile-specific controls for solar system */
@@ -248,11 +245,11 @@ canvas {
 
   /* Make controls larger and reachable with thumbs */
   .solar-system-controls {
-    bottom: 14px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
     left: 12px;
     right: 12px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* center the control, inner element handles layout */
     gap: 8px;
     pointer-events: auto;
   }
@@ -262,6 +259,15 @@ canvas {
     min-width: 40px;
     min-height: 40px;
     font-size: 12px;
+  }
+
+  /* Ensure the control box fills the available width and is readable on small screens */
+  .solar-system-controls > .bg-black {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   /* Put the quick planet button slightly higher to avoid overlap with mobile controls */
