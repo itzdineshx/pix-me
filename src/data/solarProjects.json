@@ -1,0 +1,154 @@
+[
+  {
+    "planet": "Mercury",
+    "title": "AI & Machine Learning Projects",
+    "description": "Explore my journey into artificial intelligence and machine learning implementations.",
+    "projects": [
+      {
+        "name": "Neural Network Visualizer",
+        "tech": ["Python", "TensorFlow", "React"],
+        "description": "Interactive visualization of neural network training process",
+        "link": "#"
+      },
+      {
+        "name": "Predictive Analytics Dashboard",
+        "tech": ["Python", "Scikit-learn", "Streamlit"],
+        "description": "Real-time data analysis and prediction platform",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Venus",
+    "title": "Web Development Showcase",
+    "description": "Modern web applications built with cutting-edge technologies.",
+    "projects": [
+      {
+        "name": "E-commerce Platform",
+        "tech": ["Next.js", "TypeScript", "Tailwind CSS"],
+        "description": "Full-stack e-commerce solution with modern UI/UX",
+        "link": "#"
+      },
+      {
+        "name": "Social Media Dashboard",
+        "tech": ["React", "Node.js", "MongoDB"],
+        "description": "Analytics dashboard for social media management",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Earth",
+    "title": "Full-Stack Applications",
+    "description": "Complete end-to-end applications with robust architecture.",
+    "projects": [
+      {
+        "name": "Task Management System",
+        "tech": ["Next.js", "PostgreSQL", "Prisma"],
+        "description": "Collaborative project management with real-time updates",
+        "link": "#"
+      },
+      {
+        "name": "Learning Management System",
+        "tech": ["React", "Express", "MySQL"],
+        "description": "Educational platform with course management",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Mars",
+    "title": "Data Science & Analytics",
+    "description": "Data-driven insights and visualization projects.",
+    "projects": [
+      {
+        "name": "Sales Forecasting Model",
+        "tech": ["Python", "Pandas", "Plotly"],
+        "description": "Time series analysis for business forecasting",
+        "link": "#"
+      },
+      {
+        "name": "Customer Segmentation",
+        "tech": ["Python", "Scikit-learn", "Seaborn"],
+        "description": "ML-powered customer behavior analysis",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Jupiter",
+    "title": "Mobile & Cross-Platform",
+    "description": "Mobile applications and cross-platform solutions.",
+    "projects": [
+      {
+        "name": "Fitness Tracking App",
+        "tech": ["React Native", "Firebase", "TypeScript"],
+        "description": "Cross-platform fitness and health monitoring",
+        "link": "#"
+      },
+      {
+        "name": "Weather Forecast App",
+        "tech": ["Flutter", "Dart", "REST API"],
+        "description": "Beautiful weather app with location services",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Saturn",
+    "title": "Blockchain & Web3",
+    "description": "Decentralized applications and blockchain innovations.",
+    "projects": [
+      {
+        "name": "NFT Marketplace",
+        "tech": ["Solidity", "Web3.js", "React"],
+        "description": "Decentralized marketplace for digital assets",
+        "link": "#"
+      },
+      {
+        "name": "DeFi Yield Tracker",
+        "tech": ["Ethereum", "Next.js", "Chart.js"],
+        "description": "Track and analyze DeFi investment returns",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Uranus",
+    "title": "Cloud & DevOps",
+    "description": "Cloud infrastructure and deployment automation.",
+    "projects": [
+      {
+        "name": "CI/CD Pipeline",
+        "tech": ["Docker", "GitHub Actions", "AWS"],
+        "description": "Automated deployment and testing pipeline",
+        "link": "#"
+      },
+      {
+        "name": "Microservices Architecture",
+        "tech": ["Kubernetes", "Docker", "Node.js"],
+        "description": "Scalable microservices with container orchestration",
+        "link": "#"
+      }
+    ]
+  },
+  {
+    "planet": "Neptune",
+    "title": "Open Source Contributions",
+    "description": "Community projects and open source contributions.",
+    "projects": [
+      {
+        "name": "React Component Library",
+        "tech": ["React", "TypeScript", "Storybook"],
+        "description": "Reusable UI components for modern applications",
+        "link": "#"
+      },
+      {
+        "name": "API Documentation Tool",
+        "tech": ["Node.js", "Markdown", "Express"],
+        "description": "Automated API documentation generator",
+        "link": "#"
+      }
+    ]
+  }
+]

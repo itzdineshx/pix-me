@@ -1,9 +1,91 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Canvas } from '@react-three/fiber';
 import { siteConfig } from '@/config/site';
+import { useRef } from 'react';
+import * as THREE from 'three';
+
+// Pixelated Spacecraft Component matching the fighter jet design
+function Spacecraft() {
+    const meshRef = useRef<THREE.Group>(null);
+    
+    return (
+        <group ref={meshRef} rotation={[0, 0, 0]} scale={1.2}>
+            {/* Main fuselage - light blue body */}
+            <mesh position={[0, 0, 0]}>
+                <boxGeometry args={[0.6, 2.4, 0.3]} />
+                <meshStandardMaterial color="#87CEEB" roughness={0.8} />
+            </mesh>
+            
+            {/* Cockpit window - darker blue glass */}
+            <mesh position={[0, 0.6, 0.16]}>
+                <boxGeometry args={[0.3, 0.8, 0.05]} />
+                <meshStandardMaterial color="#4682B4" emissive="#4682B4" emissiveIntensity={0.3} />
+            </mesh>
+            
+            {/* Nose cone - orange/red gradient */}
+            <mesh position={[0, 1.4, 0]}>
+                <boxGeometry args={[0.4, 0.4, 0.2]} />
+                <meshStandardMaterial color="#FF4500" roughness={0.7} />
+            </mesh>
+            <mesh position={[0, 1.6, 0]}>
+                <boxGeometry args={[0.2, 0.3, 0.15]} />
+                <meshStandardMaterial color="#FF6347" roughness={0.7} />
+            </mesh>
+            
+            {/* Main delta wings - orange gradient with yellow/red tips */}
+            <mesh position={[0, -0.2, 0]} rotation={[0, 0, 0]}>
+                <boxGeometry args={[3.2, 0.1, 2.4]} />
+                <meshStandardMaterial color="#FF8C00" roughness={0.7} />
+            </mesh>
+            
+            {/* Wing tips gradient - darker orange to red */}
+            {[-1.6, 1.6].map((x, i) => (
+                <mesh key={i} position={[x, -0.2, -0.8]}>
+                    <boxGeometry args={[0.6, 0.08, 1.0]} />
+                    <meshStandardMaterial color="#DC143C" roughness={0.7} />
+                </mesh>
+            ))}
+            
+            {/* Vertical stabilizers - dark blue/gray */}
+            {[-0.6, 0.6].map((x, i) => (
+                <mesh key={`stab-${i}`} position={[x, -0.6, 0.05]}>
+                    <boxGeometry args={[0.2, 1.2, 0.25]} />
+                    <meshStandardMaterial color="#2F4F4F" roughness={0.6} />
+                </mesh>
+            ))}
+            
+            {/* Engine exhausts - red/orange */}
+            {[-0.4, 0.4].map((x, i) => (
+                <mesh key={`engine-${i}`} position={[x, -1.3, 0]}>
+                    <boxGeometry args={[0.25, 0.4, 0.25]} />
+                    <meshStandardMaterial color="#8B0000" emissive="#FF4500" emissiveIntensity={0.5} />
+                </mesh>
+            ))}
+            
+            {/* Engine glow effects */}
+            <pointLight position={[0, -1.5, 0]} color="#FF6600" intensity={2} distance={2} />
+            {[-0.4, 0.4].map((x, i) => (
+                <mesh key={`glow-${i}`} position={[x, -1.6, 0]}>
+                    <boxGeometry args={[0.2, 0.3, 0.2]} />
+                    <meshStandardMaterial color="#FF8800" emissive="#FF6600" emissiveIntensity={1.2} transparent opacity={0.8} />
+                </mesh>
+            ))}
+            
+            {/* Side detail stripes - red */}
+            {[-0.35, 0.35].map((x, i) => (
+                <mesh key={`stripe-${i}`} position={[x, 0.2, 0.16]}>
+                    <boxGeometry args={[0.08, 1.2, 0.05]} />
+                    <meshStandardMaterial color="#DC143C" />
+                </mesh>
+            ))}
+        </group>
+    );
+}
 
 interface PortalOverlayProps {
     day: boolean;
@@ -12,9 +94,81 @@ interface PortalOverlayProps {
 
 export default function PortalOverlay({ day, onEnter }: PortalOverlayProps) {
     const [clicked, setClicked] = useState(false);
+    const router = useRouter();
 
     const handleClick = () => {
+        // Play music immediately as part of the user gesture (avoid autoplay block)
+        try {
+            if (typeof window !== 'undefined') {
+                const lightModeTrack = '/Attack on Titan 8-bit.mp3';
+                const darkModeTrack = '/Kamado Tanjiro 8bit.mp3';
+                const track = day ? lightModeTrack : darkModeTrack;
+
+                localStorage.setItem('musicPlaying', 'true');
+                localStorage.setItem('musicCurrentTime', '0');
+
+                const audioEl = document.querySelector('audio') as HTMLAudioElement | null;
+                if (audioEl) {
+                    audioEl.src = track;
+                    audioEl.loop = true;
+                    audioEl.volume = 0; // start muted for fade in
+                    audioEl.play().catch(() => {
+                        // ignore playback errors; Banner will retry
+                    });
+
+                    // quick fade-in
+                    let vol = 0;
+                    const fade = setInterval(() => {
+                        vol = Math.min(0.3, vol + 0.05);
+                        audioEl.volume = vol;
+                        if (vol >= 0.3) clearInterval(fade);
+                    }, 50);
+                }
+            }
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.warn('Failed to play music on portal open gesture', err);
+        }
+
         setClicked(true);
+        // Navigate to solar system after animation
+        setTimeout(() => {
+            // Play background music associated with current mode (day/night)
+            // before starting the journey; treat this as a user gesture so
+            // audio playback is allowed in modern browsers.
+            if (typeof window !== 'undefined') {
+                try {
+                    const lightModeTrack = '/Attack on Titan 8-bit.mp3';
+                    const darkModeTrack = '/Kamado Tanjiro 8bit.mp3';
+                    const track = day ? lightModeTrack : darkModeTrack;
+
+                    // Persist preference and start playback via the page audio element
+                    localStorage.setItem('musicPlaying', 'true');
+                    localStorage.setItem('musicCurrentTime', '0');
+
+                    const audioEl = document.querySelector('audio') as HTMLAudioElement | null;
+                    if (audioEl) {
+                        audioEl.src = track;
+                        audioEl.loop = true;
+                        audioEl.volume = 0.3;
+                        // Play - allowed because this is a gesture handler
+                        audioEl.play().catch(() => {
+                            // ignore playback errors; Banner will attempt to resume later
+                        });
+                    }
+                } catch (err) {
+                    // Don't block navigation on errors
+                    // eslint-disable-next-line no-console
+                    console.warn('Error while attempting to play background music', err);
+                }
+            }
+
+            // Mark portal as entered (persist enter state) and go to solar system
+            if (typeof window !== 'undefined' && typeof onEnter === 'function') {
+                onEnter();
+            }
+            router.push('/solar-system');
+        }, 800);
     };
 
     // Generate ring of blocks
@@ -26,17 +180,6 @@ export default function PortalOverlay({ day, onEnter }: PortalOverlayProps) {
             y: Math.round(Math.sin(angle) * radius),
         };
     });
-
-    // Safely trigger onEnter after animation ends
-    useEffect(() => {
-        if (clicked) {
-            const timeout = setTimeout(() => {
-                onEnter();
-            }, ringOffsets.length * 50 + 800); // 50ms per block + 800ms explosion
-
-            return () => clearTimeout(timeout);
-        }
-    }, [clicked, onEnter, ringOffsets.length]);
 
     return (
         <AnimatePresence>
@@ -54,17 +197,36 @@ export default function PortalOverlay({ day, onEnter }: PortalOverlayProps) {
                         transition={{ duration: 0.5 }}
                     >
                         <p className="title font-pixel text-lg">👋 Welcome!</p>
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-4 flex items-end justify-center gap-8">
                             <Image
                                 src="/avatar.png"
-                                width={250}
-                                height={250}
-                                className="pixelated mx-auto"
+                                width={200}
+                                height={200}
+                                className="pixelated"
                                 alt="Avatar"
+                                priority
                             />
+                            <motion.div
+                                animate={{
+                                    y: [0, -12, 0]
+                                }}
+                                transition={{
+                                    duration: 2.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                }}
+                                className="relative w-32 h-32"
+                            >
+                                <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+                                    <ambientLight intensity={0.5} />
+                                    <directionalLight position={[5, 5, 5]} intensity={1} />
+                                    <pointLight position={[-5, -5, -5]} intensity={0.5} color="#4444ff" />
+                                    <Spacecraft />
+                                </Canvas>
+                            </motion.div>
                         </div>
                         <p className="mb-4 font-pixel text-center">
-                            I’m <span className="text-green-700">{siteConfig.profile.name}</span>. Explore my blocky world of code!
+                            I'm <span className="text-green-700">{siteConfig.profile.name}</span>. Ready for a cosmic journey?
                         </p>
                         <div className="text-center mt-4">
                             <button
@@ -84,26 +246,62 @@ export default function PortalOverlay({ day, onEnter }: PortalOverlayProps) {
 
             {clicked && (
                 <motion.div
-                    className="fixed inset-0 bg-black flex justify-center items-center z-50"
-                    initial="start"
-                    animate="end"
-                    variants={{
-                        start: { opacity: 1 },
-                        end: { opacity: 1 },
-                    }}
-                    transition={{ duration: 0 }}
+                    className="fixed inset-0 bg-black flex justify-center items-center z-50 overflow-hidden"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2 }}
                 >
-                    {ringOffsets.map((off, i) => (
+                    <motion.div
+                        className="w-64 h-64"
+                        initial={{ y: 0, scale: 1 }}
+                        animate={{ 
+                            y: -2000,
+                            scale: [1, 1.8, 2.5]
+                        }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeIn"
+                        }}
+                    >
+                        <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+                            <ambientLight intensity={0.5} />
+                            <directionalLight position={[5, 5, 5]} intensity={1.5} />
+                            <pointLight position={[0, -2, 0]} intensity={3} color="#ff6600" />
+                            <Spacecraft />
+                        </Canvas>
+                    </motion.div>
+                    <motion.div
+                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-64 bg-gradient-to-t from-orange-500 via-yellow-400 to-transparent"
+                        initial={{ opacity: 0, scaleY: 0 }}
+                        animate={{ 
+                            opacity: [0, 1, 0.8, 0],
+                            scaleY: [0, 1.5, 2, 2.5]
+                        }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut"
+                        }}
+                    />
+                    {/* Particle effects */}
+                    {Array.from({ length: 20 }).map((_, i) => (
                         <motion.div
                             key={i}
-                            className="absolute bg-green-700 border-2 border-black"
-                            style={{ width: 16, height: 16, opacity: 1 }}
-                            initial={{ x: 0, y: 0 }}
-                            animate={{ x: off.x * 2, y: off.y * 2, opacity: 0 }}
+                            className="absolute w-2 h-2 bg-yellow-400 rounded-full"
+                            style={{ 
+                                left: '50%',
+                                top: '50%'
+                            }}
+                            initial={{ x: 0, y: 0, opacity: 1 }}
+                            animate={{ 
+                                x: (Math.random() - 0.5) * 200,
+                                y: Math.random() * 300 + 100,
+                                opacity: 0,
+                                scale: [1, 0.5, 0]
+                            }}
                             transition={{
-                                delay: i * 0.05,
-                                duration: 0.8,
-                                ease: 'easeOut',
+                                delay: i * 0.02,
+                                duration: 0.6,
+                                ease: 'easeOut'
                             }}
                         />
                     ))}

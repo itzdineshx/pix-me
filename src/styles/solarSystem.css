@@ -1,0 +1,278 @@
+/* 8-bit Solar System Simulation Styles */
+
+/* Ensure pixelated rendering across the entire application */
+.solar-system-container {
+  /* Prefer Edge-friendly -webkit-optimize-contrast and pixelated for general pixelation */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+
+/* 8-bit cursor for interactive elements */
+.pixel-cursor {
+  cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFeSURBVCiRpZM9SwNBEIafgwQSCxsLwcJCG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLG1sLBxcLwdZ'), auto;
+}
+
+/* Retro loading animation */
+.loading-pixels {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.loading-pixels div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 0; /* Square pixels */
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.loading-pixels div:nth-child(1) {
+  left: 8px;
+  animation: loading1 0.6s infinite;
+  background: #ff6b6b;
+}
+
+.loading-pixels div:nth-child(2) {
+  left: 8px;
+  animation: loading2 0.6s infinite;
+  background: #4ecdc4;
+}
+
+.loading-pixels div:nth-child(3) {
+  left: 32px;
+  animation: loading2 0.6s infinite;
+  background: #45b7d1;
+}
+
+.loading-pixels div:nth-child(4) {
+  left: 56px;
+  animation: loading3 0.6s infinite;
+  background: #f9ca24;
+}
+
+@keyframes loading1 {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes loading3 {
+  0% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+
+@keyframes loading2 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(24px, 0); }
+}
+
+/* 8-bit scrollbar */
+.solar-system-container::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.solar-system-container::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border: 2px solid #333;
+}
+
+.solar-system-container::-webkit-scrollbar-thumb {
+  background: #4a90e2;
+  border: 2px solid #333;
+}
+
+.solar-system-container::-webkit-scrollbar-thumb:hover {
+  background: #357abd;
+}
+
+/* Planet visit notification */
+.planet-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 3px solid #4a90e2;
+  color: white;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  border-radius: 0;
+  animation: pixelNotification 3s ease-out;
+}
+
+@keyframes pixelNotification {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  20% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Warp speed overlay */
+.warp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: radial-gradient(circle, transparent 30%, rgba(255, 255, 255, 0.1) 100%);
+  animation: warpPulse 0.5s infinite alternate;
+}
+
+@keyframes warpPulse {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 8-bit progress bar */
+.pixel-progress {
+  width: 100%;
+  height: 20px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  position: relative;
+  overflow: hidden;
+}
+
+.pixel-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2 0%, #357abd 100%);
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.pixel-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: progressGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes progressGlow {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Planet card enhancements */
+.planet-card {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.planet-card:hover {
+  border-color: #4a90e2;
+  transform: scale(1.02);
+}
+
+/* Journey complete animation */
+.journey-complete {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.95);
+  animation: journeyComplete 4s ease-out;
+}
+
+@keyframes journeyComplete {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .planet-notification {
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    padding: 8px 12px;
+  }
+  
+  .solar-system-container::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Custom CSS for Canvas pixelation */
+canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+
+/* Mobile-specific controls for solar system */
+@media (max-width: 768px) {
+  .solar-system-container {
+    background-position: center;
+  }
+
+  /* Make controls larger and reachable with thumbs */
+  .solar-system-controls {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: center; /* center the control, inner element handles layout */
+    gap: 8px;
+    pointer-events: auto;
+  }
+
+  .solar-system-controls .nes-btn {
+    padding: 8px 10px;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  /* Ensure the control box fills the available width and is readable on small screens */
+  .solar-system-controls > .bg-black {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  /* Put the quick planet button slightly higher to avoid overlap with mobile controls */
+  .portal-quick-button {
+    bottom: 76px; /* leave space for the control bar */
+    right: 8px;
+  }
+}

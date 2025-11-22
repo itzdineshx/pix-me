@@ -119,6 +119,7 @@ section::after {
 
 /* Global pixelation for all images and icons */
 img, [class*="icon"], svg {
+  /* Use modern and Edge-ready pixelation rendering */
   image-rendering: -webkit-optimize-contrast !important;
   image-rendering: pixelated !important;
 }
@@ -505,7 +506,8 @@ img, [class*="icon"], svg {
   background: #fafafa;
   color: #0f172a;
   border-color: #111827;
-  box-shadow: inset -2px -2px 0px #cbd5f5, inset 2px 2px 0px #fff;
+  /* Use grey accents instead of blue to match the UI preference */
+  box-shadow: inset -2px -2px 0px #e5e7eb, inset 2px 2px 0px #fff;
 }
 
 .contact-social-btn-night {
@@ -515,14 +517,24 @@ img, [class*="icon"], svg {
   box-shadow: inset -2px -2px 0px #1f2937, inset 2px 2px 0px #0f172a !important;
 }
 
+/* Convert the resume button to a grey UI color instead of blue */
 .contact-social-btn-resume {
-  background: linear-gradient(90deg, #2563eb, #0ea5e9);
+  background: linear-gradient(90deg, #6b7280, #9ca3af); /* from slate-600 to gray-400 */
   color: #f8fafc;
-  border-color: #fbbf24;
+  border-color: #d1d5db; /* subtle grey border */
 }
 
 .contact-social-btn-night.contact-social-btn-resume {
-  background: linear-gradient(90deg, #0f172a, #1d4ed8);
+  background: linear-gradient(90deg, #0f172a, #374151); /* dark slate to muted */
+}
+
+/* Contact CTA override to use grey instead of primary blue */
+.contact-cta {
+  color: #6b7280; /* slate-500 */
+  font-weight: 700;
+}
+.contact-cta.dark {
+  color: #e5e7eb; /* lighter grey on dark backgrounds */
 }
 
 /* Loading Animation Styles */
@@ -928,9 +940,10 @@ img, [class*="icon"], svg {
 
 /* Line clamping utility */
 .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
@@ -944,7 +957,16 @@ img, [class*="icon"], svg {
 /* Smooth scrolling for touch devices */
 html {
     scroll-behavior: smooth;
+    /* Prevent font auto-scaling on mobile browsers that use -webkit-text-size-adjust */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Apply iOS-specific momentum scrolling only when supported */
+@supports (-webkit-overflow-scrolling: touch) {
+  html {
     -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Better text rendering on mobile */
@@ -952,4 +974,23 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+}
+
+/* Cross-browser fallback for backdrop blur utilities used by Tailwind */
+.backdrop-blur-sm {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.contact-cta-btn {
+  background: #f3f4f6; /* gray-100 */
+  color: #111827; /* gray-900 */
+  border-color: #d1d5db; /* gray-300 */
+}
+.contact-cta-btn:hover {
+  background: #e5e7eb; /* gray-200 */
+}
+.contact-cta-btn.dark {
+  background: linear-gradient(180deg,#1f2937,#111827);
+  color: #e5e7eb;
+  border-color: #111827;
 }

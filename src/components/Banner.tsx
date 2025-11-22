@@ -15,7 +15,7 @@ export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDa
     const [isOpen, setIsOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTrack, setCurrentTrack] = useState('');
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     const navButtonClass = `header-nes-btn pixelated touch-manipulation hover:scale-105 active:scale-95 transition-transform duration-200 ${day ? '' : 'header-nes-btn-dark'}`;
     
     // Music tracks for different modes
@@ -49,6 +49,12 @@ export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDa
 
     // Effect to handle music track switching based on day/night mode
     useEffect(() => {
+        // Try to attach to the global audio element created in the root layout
+        if (typeof window !== 'undefined') {
+            const globalAudio = document.getElementById('global-audio') as HTMLAudioElement | null;
+            if (globalAudio) audioRef.current = globalAudio;
+        }
+
         const newTrack = day ? lightModeTrack : darkModeTrack;
         
         if (currentTrack !== newTrack && audioRef.current) {
@@ -96,7 +102,7 @@ export default function Banner({ day, toggleDayNight }: { day: boolean; toggleDa
 
     useEffect(() => {
         if (audioRef.current) {
-            audioRef.current.loop = true;
+            if (audioRef.current) audioRef.current.loop = true;
             audioRef.current.volume = 0.3;
             
             // Set initial track
